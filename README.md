@@ -30,8 +30,32 @@ Hum files are regular and procedural in nature. They consist of a series of sent
 
 ### List of currently available commands:
 
-- `#` (comment command; ignored by the synthesizer):
+- `#`:
 
-  `#: This is a comment!`
+  This is the comment command. These sentences are ignored by the synthesizer and are intended for including annotations in the score.
 
-  \*Note that at this time, the ":" and "." character are not supported in comments.
+  Example: `#: This is a comment.`
+
+  Note that at this time, the ":" and "." character are not supported in comments.
+
+- `Tempo`
+
+  This is the tempo command. It sets the tempo of the project. It requires an _integer value_.
+
+  Example: `Tempo: 90.` (this corresponds to 90 beats per minute)
+
+- `Key`
+
+  This is the key command. It accepts two possible text values: `sharps` or `flats`. This just allows you to specify whether you want your score to use sharp notes or flats.
+
+  Example: `Key: sharps.`
+
+  Note that there is no support for mixing sharps and flats at this time.
+
+- `Measure`
+
+  This is the measure command. It specifies the beginning of a new measure in the score. It requires an _integer value_ corresponding to the number of beats in the measure.
+
+  Example: `Measure: 3.` (this starts a new measure which contains three beats)
+
+  Note that the measure command should never come before the tempo or key commands.
