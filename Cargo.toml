@@ -2,6 +2,14 @@
 name = "hum"
 version = "0.1.0"
 authors = ["Connor Bulakites <connor@bulakites.net>"]
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+    "LICENSE",
+    "DISCLAIMER",
+    "README.md",
+    "EXTERNAL_DEPENDENCY_LICENSES/*",
+]
 
 [dependencies]
 hound = "3.4.0"
