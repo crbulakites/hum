@@ -10,6 +10,15 @@ include = [
     "README.md",
     "EXTERNAL_DEPENDENCY_LICENSES/*",
 ]
+description = "A music notation language and synthesizer written in Rust."
+repository = "https://github.com/crbulakites/hum"
+readme = "README.md"
+keywords = ["music", "notation", "synthesizer", "sine", "wave"]
+categories = ["multimedia", "multimedia::audio"]
+license = "GPL-3.0-or-later"
+
+[badges]
+maintenance = { status = "experimental" }
 
 [dependencies]
 hound = "3.4.0"
