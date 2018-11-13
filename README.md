@@ -4,6 +4,11 @@ A music notation language and synthesizer written in Rust.
 
 Hum converts \*.hum files to playable \*.wav files.
 
+_This project is in early development, and its public API is possibly subject to
+breaking changes at any time. If I knowingly make a breaking change, I will
+update the MINOR version in the semantic versioning scheme, where the version
+numbers are MAJOR.MINOR.PATCH._
+
 Building the Project
 --------------------
 To build the project, use `cargo build` in the root directory.
