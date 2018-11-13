@@ -60,66 +60,66 @@ Hum files are regular and procedural in nature. They consist of a series of sent
 
   Note that the measure command should never come before the tempo or key commands.
 
-  - `Voice`:
+- `Voice`:
 
-    This is the voice command. It specifies the beginning of notation for a single instrument at the beginning of the last declared measure. In other words, a voice is monophonic. To achieve polyphonic sound, you need multiple voice commands under one measure command. See the included `daisy.hum` file for several examples of this. Every time you create a new voice, notation begins at the beginning of the last declared measure. You can include as many voices as you want per measure, and each measure is _not_ required to have the same number of voices. Be careful about including more than five or so at this point, though, because I have not implemented volume controls yet, and the audio might clip (this essentially means to max out in volume and become distorted).
+  This is the voice command. It specifies the beginning of notation for a single instrument at the beginning of the last declared measure. In other words, a voice is monophonic. To achieve polyphonic sound, you need multiple voice commands under one measure command. See the included `daisy.hum` file for several examples of this. Every time you create a new voice, notation begins at the beginning of the last declared measure. You can include as many voices as you want per measure, and each measure is _not_ required to have the same number of voices. Be careful about including more than five or so at this point, though, because I have not implemented volume controls yet, and the audio might clip (this essentially means to max out in volume and become distorted).
 
-    The voice command requires a text argument corresponding to the wave type or instrument sound which you want to play that part. Right now, the only supported value is `sine`.
+  The voice command requires a text argument corresponding to the wave type or instrument sound which you want to play that part. Right now, the only supported value is `sine`.
 
-    Example: `Voice: sine.`
+  Example: `Voice: sine.`
 
-  - Note Commands:
+- Note Commands:
 
-    There are currently _88_ possible note commands corresponding to the keys on a standard grand piano. The note commands are formatted like so: `{note name}_{octave}`. If you set your key value to sharps, then these are the possible note names:
+  There are currently _88_ possible note commands corresponding to the keys on a standard grand piano. The note commands are formatted like so: `{note name}_{octave}`. If you set your key value to sharps, then these are the possible note names:
 
-    `["An", "As", "Bn", "Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs"]`
+  `["An", "As", "Bn", "Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs"]`
 
-    If you set your key value to flats, these are the possible note names:
+  If you set your key value to flats, these are the possible note names:
 
-    `["An", "Bf", "Bn", "Cn", "Df", "Dn", "Ef", "En", "Fn", "Gf", "Gn", "Af"]`
+  `["An", "Bf", "Bn", "Cn", "Df", "Dn", "Ef", "En", "Fn", "Gf", "Gn", "Af"]`
 
-    In this style, "n" refers to "natural," "s" refers to "sharp," and "f" refers to "flat." Additionally, the octave part of a note can range from 0 to 8, with the lowest possible note being `An_0` and the highest possible note being `Cn_7`.
+  In this style, "n" refers to "natural," "s" refers to "sharp," and "f" refers to "flat." Additionally, the octave part of a note can range from 0 to 8, with the lowest possible note being `An_0` and the highest possible note being `Cn_7`.
 
-    NOTE: Octave numbers roll over on A natural, so this is how part of the sequence of notes in order of pitch goes: `Gn_4, Gs_4, An_5, As_5, etc...`.
+  NOTE: Octave numbers roll over on A natural, so this is how part of the sequence of notes in order of pitch goes: `Gn_4, Gs_4, An_5, As_5, etc...`.
 
-    ALSO––I HAVE JUST NOTICED ON WIKIPEDIA: the traditional convention seems to be to roll over the octave number on C natural instead of A... so that may have to change in version 0.2.0 🧐...
+  ALSO––I HAVE JUST NOTICED ON WIKIPEDIA: the traditional convention seems to be to roll over the octave number on C natural instead of A... so that may have to change in version 0.2.0 🧐...
 
-    There is also a special note called `Rest` which corresponds to silence within a single voice, but it _has not yet been implemented_.
+  There is also a special note called `Rest` which corresponds to silence within a single voice, but it _has not yet been implemented_.
 
-    If you use a note value that is not recognized, the current behavior is to not insert the note, which will throw off the timing of your measure. I will work on fixing this in a later version.
+  If you use a note value that is not recognized, the current behavior is to not insert the note, which will throw off the timing of your measure. I will work on fixing this in a later version.
 
-    ...So that covers the possible note _commands_. Now for the possible note _values_:
+  ...So that covers the possible note _commands_. Now for the possible note _values_:
 
-    A note value is simply a fraction in the form `{numerator}/{denominator}`. It evaluates to a floating point number, and it determines the _fraction of the measure_ that the note should fill. Remember that the first note under a voice command is positioned at the beginning of the measure. Therefore, to fill all of the space in the measure, all of the note _values_ should add up to _1.0_, else there will be silence at the end of the measure. If the note values exceed 1.0, then the note will bleed over into the next measure, but the notes that actually belong to the next measure will still start at the beginning of that measure. If this is confusing, I encourage you to play around with a couple of simple \*.hum files until you get the hang of it.
+  A note value is simply a fraction in the form `{numerator}/{denominator}`. It evaluates to a floating point number, and it determines the _fraction of the measure_ that the note should fill. Remember that the first note under a voice command is positioned at the beginning of the measure. Therefore, to fill all of the space in the measure, all of the note _values_ should add up to _1.0_, else there will be silence at the end of the measure. If the note values exceed 1.0, then the note will bleed over into the next measure, but the notes that actually belong to the next measure will still start at the beginning of that measure. If this is confusing, I encourage you to play around with a couple of simple \*.hum files until you get the hang of it.
 
-    Putting it all together, here's a simple \*.hum file with two measures, one voice per measure playing the melody, and three voices per measure playing a C major chord:
+  Putting it all together, here's a simple \*.hum file with two measures, one voice per measure playing the melody, and three voices per measure playing a C major chord:
 
-    ```
-    Tempo: 60.
-    Key: sharps.
+  ```
+  Tempo: 60.
+  Key: sharps.
 
-    #: Declare a measure with 3 beats.
-    Measure: 3.
-    #: Here's a melody with three notes evenly dividing the measure.
-    Voice: sine.
-    Cn_4: 1/3. Cn_4: 1/3. Cn_4: 1/3.
-    #: Here's a chord with three voices playing one note per measure.
-    Voice: sine.
-    Cn_3: 3/3.
-    Voice: sine.
-    En_3: 3/3.
-    Voice: sine.
-    Gn_3: 3/3.
+  #: Declare a measure with 3 beats.
+  Measure: 3.
+  #: Here's a melody with three notes evenly dividing the measure.
+  Voice: sine.
+  Cn_4: 1/3. Cn_4: 1/3. Cn_4: 1/3.
+  #: Here's a chord with three voices playing one note per measure.
+  Voice: sine.
+  Cn_3: 3/3.
+  Voice: sine.
+  En_3: 3/3.
+  Voice: sine.
+  Gn_3: 3/3.
 
-    #: Let's repeat that without comments.
+  #: Let's repeat that without comments.
 
-    Measure: 3.
-    Voice: sine.
-    Cn_4: 1/3. Cn_4: 1/3. Cn_4: 1/3.
-    Voice: sine.
-    Cn_3: 3/3.
-    Voice: sine.
-    En_3: 3/3.
-    Voice: sine.
-    Gn_3: 3/3.
-    ```
+  Measure: 3.
+  Voice: sine.
+  Cn_4: 1/3. Cn_4: 1/3. Cn_4: 1/3.
+  Voice: sine.
+  Cn_3: 3/3.
+  Voice: sine.
+  En_3: 3/3.
+  Voice: sine.
+  Gn_3: 3/3.
+  ```
