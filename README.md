@@ -4,11 +4,11 @@ A music notation language and synthesizer written in Rust.
 
 Hum converts \*.hum files to playable \*.wav files.
 
-Building the project
+Building the Project
 --------------------
 To build the project, use `cargo build` in the root directory.
 
-Testing the project
+Testing the Project
 -------------------
 To test the project, use `cargo run` in the root directory.
 
@@ -19,6 +19,20 @@ Hum requires two command-line arguments:
 To convert the included sample \*.hum file, "daisy.hum," use in the root directory, for example:
 
 `cargo run daisy.hum daisy.wav`
+
+Installing the Latest Release
+-----------------------------
+To install the latest release as a CLI tool, first make sure you have Cargo installed so that you can download the binary from Crates.io:
+
+https://www.rust-lang.org/en-US/install.html
+
+Then run the following command in the terminal:
+
+`cargo install hum`
+
+Now you can use hum like any other CLI tool. For example, presuming the file `daisy.hum` exists, you could do:
+
+`hum daisy.hum daisy.wav`
 
 DISCLAIMER:
 -----------
