@@ -27,3 +27,11 @@ This program produces sound output in the form of \*.wav files, and it is not ye
 An Explanation of the Hum Music Notation Language:
 --------------------------------------------------
 Hum files are regular and procedural in nature. They consist of a series of sentences separated by the "." character. Each sentence consists of two clauses separated by the ":" character. The first clause is the command, and the second clause is the value. I haven't implemented hardly any error handling yet, so if you don't have exactly one ":" for every "."––or you use an unknown command or value pattern––it's very possible that the program will crash or produce unexpected output.
+
+### List of currently available commands:
+
+- `#` (comment command; ignored by the synthesizer):
+
+  `#: This is a comment!`
+
+  \*Note that at this time, the ":" and "." character are not supported in comments.
