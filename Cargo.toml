@@ -1,0 +1,7 @@
+[package]
+name = "hum"
+version = "0.1.0"
+authors = ["Connor Bulakites <connor@bulakites.net>"]
+
+[dependencies]
+hound = "3.4.0"
