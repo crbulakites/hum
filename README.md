@@ -22,7 +22,7 @@ To convert the included \*.hum file, "daisy.hum," to a file called "daisy.wav," 
 
 Installing the Latest Release
 -----------------------------
-To install the latest release as a CLI tool, first make sure that you have Cargo installed so that you can download the binary from Crates.io:
+To install the latest release as a CLI tool, first make sure that you have Cargo installed so that you can download the binary from crates.io:
 
 https://www.rust-lang.org/en-US/install.html
 
@@ -50,7 +50,7 @@ Hum files are regular and procedural in nature. They consist of a series of sent
 
   Example: `#: This is a comment.`
 
-  Note that at this time, the ":" and "." character are not supported in comments Including them will likely cause the program to panic.
+  Note that at this time, the ":" and "." character are not supported in comments. Including them will likely cause the program to panic.
 
 - `Tempo`:
 
@@ -78,7 +78,7 @@ Hum files are regular and procedural in nature. They consist of a series of sent
 
   This is the voice command. It specifies the beginning of notation for a single "instrument" at the beginning of the last declared measure. In other words, a voice is monophonic. To achieve polyphonic sound, you need multiple voice commands under one measure command. See the included `daisy.hum` file for several examples of this. Every time you create a new voice, notation begins at the beginning of the last declared measure. You can include as many voices as you want per measure, and each measure is _not_ required to have the same number of voices. Be careful about including more than about five or so voices at any given time, though, because I have not implemented volume controls yet, and the base volume of each voice compounds (adds) on top of the others. If you use too many voices at this point, the audio might clip (this essentially means that it will "max out" in volume and become distorted).
 
-  The voice command requires a text argument corresponding to the wave type or instrument sound which you want to play that part. Right now, the only supported value is `sine`.
+  The voice command requires a text argument corresponding to the wave type or instrument sound which you want to play the part. Right now, the only supported value is `sine`.
 
   Example: `Voice: sine.`
 
@@ -144,4 +144,4 @@ I thought it was cool, and I've never programmed a large project in Rust before,
 
 Why the Choice of License?
 ==========================
-I originally imagined this project acting as more of a standalone application as opposed to a library, and I would like it to remain open, so I felt that the GPLv3 was a good fit. I might add a programming based API in the future, though. For more insight on what you _are_ and _aren't_ allowed to do with this code, you can read more about its license at [the GNU website](https://www.gnu.org/licenses/licenses.html). If anybody actually starts contributing to or using this code and wants to convince me to release it under an alternative license, then just contact me, and I am open to having a conversation regarding the matter 🙂.
+I originally imagined this project acting as more of a standalone application as opposed to a library, and I would like it to remain open, so I felt that the GPLv3 was a good fit. I might add a programming-based API in the future, though. For more insight on what you _are_ and _aren't_ allowed to do with this code, you can read more about the terms of the GPL at [the GNU website](https://www.gnu.org/licenses/licenses.html). If anybody actually starts contributing to or using this code and wants to convince me to release it under an alternative license, then just contact me, and I am open to having a conversation regarding the matter 🙂.
