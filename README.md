@@ -1,4 +1,4 @@
-Hum
+Hum 👄
 ===
 A music notation language and synthesizer written in Rust.
 
@@ -123,3 +123,11 @@ Hum files are regular and procedural in nature. They consist of a series of sent
   Voice: sine.
   Gn_3: 3/3.
   ```
+
+Why Did I Make This?
+====================
+I thought it was cool, and I've never programmed a large project in Rust before, so obviously I'm the person for the job 😎. Also, I like the idea of an open music markup language being easily readable by both humans and computers. I think if it's implemented correctly, it might make it easier to preserve musical scores in digital format. This has been a fun project to get started with so far, and I hope that people make awesome music with it.
+
+Why the Choice of License?
+==========================
+I originally imagined this project acting as a more of a standalone application as opposed to a library, and I would like to remain open, so I felt that the GPLv3 was a good fit. For more insight on what you are and _aren't_ allowed to do with this code, you can read more about its license at [the GNU website](https://www.gnu.org/licenses/licenses.html). If anybody actually starts contributing to or using this code and wants to convince me to release it under an alternative license, then just contact me, and I am open to having a conversation regarding the matter 🙂.
