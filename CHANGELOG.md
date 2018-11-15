@@ -15,13 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - No more extra silence appended to the end of WAV files.
 
-## [0.1.1] - 2018-11-12
+## [0.1.1] - 2018-11-13
 ### Added
 - Add change log.
 
 ### Changed
 - Edit language in README.
 
-## [0.1.0] - 2018-11-12
+## [0.1.0] - 2018-11-13
 ### Added
 - Add entirety of experimental code repository for publication.
