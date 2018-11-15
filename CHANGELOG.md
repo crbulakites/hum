@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Square wave voice.
 
+### Changed
+- README and readme_demo.hum/.wav to include square voice examples.
+
 ## [0.1.1] - 2018-11-12
 ### Added
 - Add change log.

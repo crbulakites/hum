@@ -83,7 +83,7 @@ Hum files are regular and procedural in nature. They consist of a series of sent
 
   This is the voice command. It specifies the beginning of notation for a single "instrument" at the beginning of the last declared measure. In other words, a voice is monophonic. To achieve polyphonic sound, you need multiple voice commands under one measure command. See the included `daisy.hum` file for several examples of this. Every time you create a new voice, notation begins at the beginning of the last declared measure. You can include as many voices as you want per measure, and each measure is _not_ required to have the same number of voices. Be careful about including more than about five or so voices at any given time, though, because I have not implemented volume controls yet, and the base volume of each voice compounds (adds) on top of the others. If you use too many voices at this point, the audio might clip (this essentially means that it will "max out" in volume and become distorted).
 
-  The voice command requires a text argument corresponding to the wave type or instrument sound which you want to play the part. Right now, the only supported value is `sine`.
+  The voice command requires a text argument corresponding to the wave type or instrument sound which you want to play the part. Right now, there are two supported voices: `sine` and `square`.
 
   Example: `Voice: sine.`
 
@@ -120,7 +120,7 @@ Hum files are regular and procedural in nature. They consist of a series of sent
   #: Declare a measure with 3 beats.
   Measure: 3.
   #: Here's a melody with three notes evenly dividing the measure.
-  Voice: sine.
+  Voice: square.
   Cn_4: 1/3. En_4: 1/3. Gn_4: 1/3.
   #: Here's a chord with three voices playing one note per measure.
   Voice: sine.
@@ -133,7 +133,7 @@ Hum files are regular and procedural in nature. They consist of a series of sent
   #: Let's repeat that without comments.
 
   Measure: 3.
-  Voice: sine.
+  Voice: square.
   Cn_4: 1/3. En_4: 1/3. Gn_4: 1/3.
   Voice: sine.
   Cn_3: 3/3.
