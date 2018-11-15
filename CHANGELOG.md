@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - README and readme_demo.hum/.wav to include square voice examples.
 
+### Fixed
+- No more extra silence appended to the end of WAV files.
+
 ## [0.1.1] - 2018-11-12
 ### Added
 - Add change log.

@@ -80,11 +80,6 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
                     // Get the current note position:
                     let note_position = cursor + offset;
 
-                    println!(
-                        "Added note {} ({} Hz) at {} seconds.",
-                        command, note_frequency, note_position
-                    );
-
                     add_note_to_track(
                         note_position,
                         note_duration,
@@ -92,6 +87,11 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
                         volume,
                         voice,
                         &mut track,
+                    );
+
+                    println!(
+                        "Added note {} ({} Hz) at {} seconds.",
+                        command, note_frequency, note_position
                     );
 
                     // Update the offset:
@@ -108,30 +108,37 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
 }
 
 fn add_note_to_track(
-    position: f32,
-    duration: f32,
-    frequency: &f32,
-    volume: f32,
-    voice: &str,
-    track: &mut Vec<f32>,
+    position: f32,        // The start position of the note in the track in seconds
+    duration: f32,        // The duration of the note to add in seconds
+    frequency: &f32,      // The frequency of the note
+    volume: f32,          // The volume/amplitude of the note
+    voice: &str,          // The "instrument" or "sound" of the note
+    track: &mut Vec<f32>, // The master audio track to be mutated
 ) {
+    // Generate the appropriate waveform for the note:
     let note = match voice {
         "square" => hum_math::make_wave(&hum_voice::square, frequency, duration),
         _ => hum_math::make_wave(&hum_voice::sine, frequency, duration),
     };
 
-    let sample_position = (position * (SAMPLE_RATE as f32)) as i64;
-    let sample_duration = (duration * (SAMPLE_RATE as f32)) as i64;
+    // Find the start sample for the note and the duration in number of samples:
+    let sample_position = (position * (SAMPLE_RATE as f32)) as usize;
+    let sample_duration = (duration * (SAMPLE_RATE as f32)) as usize;
+
+    // Find the end sample for the note:
     let extended_position = sample_position + sample_duration;
 
-    let difference = extended_position - track.len() as i64;
-
-    if difference > 0 {
-        // Stupid, but I'll figure out a better way later:
-        track.extend((0..extended_position).map(|i| i as f32 * 0.0))
+    // Extend the master track if it isn't long enough to contain the new note:
+    match track.len().checked_sub(extended_position) {
+        Some(_) => (),
+        None => {
+            let num_samples_to_add = extended_position - track.len();
+            track.extend(vec![0.0; num_samples_to_add]);
+        }
     }
 
-    for i in 0..sample_duration as usize {
-        track[sample_position as usize + i] += note[i] * volume;
+    // Add the waveform to the waveforms already present in the master track:
+    for i in 0..sample_duration {
+        track[sample_position + i] += note[i] * volume;
     }
 }
