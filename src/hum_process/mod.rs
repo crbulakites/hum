@@ -28,6 +28,7 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
     let mut beats: u32 = 4;
     let mut cursor: f32 = 0.0;
     let mut offset: f32 = 0.0;
+    let mut voice: &str = "sine";
     let volume: f32 = 0.05; // Please be careful with your ears and speakers :)
 
     let mut note_frequencies: HashMap<String, f32> = hum_math::piano_key_frequencies("sharps");
@@ -58,6 +59,7 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
         } else if command == "Voice" {
             // On a new voice track, begin writing at the beginning of the measure
             offset = 0.0;
+            voice = value;
         } else if command == "#" {
             // Comment command: do nothing
         } else {
@@ -88,6 +90,7 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
                         note_duration,
                         note_frequency,
                         volume,
+                        voice,
                         &mut track,
                     );
 
@@ -109,9 +112,13 @@ fn add_note_to_track(
     duration: f32,
     frequency: &f32,
     volume: f32,
+    voice: &str,
     track: &mut Vec<f32>,
 ) {
-    let note = hum_math::make_wave(&hum_voice::sine, frequency, duration);
+    let note = match voice {
+        "square" => hum_math::make_wave(&hum_voice::square, frequency, duration),
+        _ => hum_math::make_wave(&hum_voice::sine, frequency, duration),
+    };
 
     let sample_position = (position * (SAMPLE_RATE as f32)) as i64;
     let sample_duration = (duration * (SAMPLE_RATE as f32)) as i64;
