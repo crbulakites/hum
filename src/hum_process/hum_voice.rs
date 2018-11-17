@@ -31,3 +31,7 @@ pub fn square(time: f32, frequency: &f32) -> f32 {
         -1.0
     }
 }
+
+pub fn sawtooth(time: f32, frequency: &f32) -> f32 {
+    2.0 * (time * frequency - (0.5 + time * frequency).floor())
+}

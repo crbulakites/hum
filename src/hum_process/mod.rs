@@ -44,7 +44,7 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
     // The current key of the track ("sharps" versus "flats", defaults to sharps):
     let mut key: &str = "sharps";
     // The current note/frequency mappings (the HashMap keys vary depending on the musical key):
-    let mut note_frequencies: HashMap<String, f32> = hum_math::piano_key_frequencies(key);
+    let mut note_frequencies: HashMap<String, f32> = hum_math::get_standard_note_frequencies(key);
     // The audio track itself; waveforms will be added to this as the *hum file is parsed:
     let mut track: Vec<f32> = Vec::new();
     // -------------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
                 // Possibly expensive operation, do not repeat if unnecessary:
                 if value != key {
                     key = value;
-                    note_frequencies = hum_math::piano_key_frequencies(key);
+                    note_frequencies = hum_math::get_standard_note_frequencies(key);
                 }
             }
             "Measure" => {
@@ -147,8 +147,9 @@ fn add_note_to_track(
 ) {
     // Generate the appropriate waveform for the note:
     let note = match voice {
-        "square" => hum_math::make_wave(&hum_voice::square, frequency, duration),
-        _ => hum_math::make_wave(&hum_voice::sine, frequency, duration),
+        "square" => hum_math::generate_wave(&hum_voice::square, frequency, duration),
+        "sawtooth" => hum_math::generate_wave(&hum_voice::sawtooth, frequency, duration),
+        _ => hum_math::generate_wave(&hum_voice::sine, frequency, duration),
     };
 
     // Find the start sample for the note and the duration in number of samples:

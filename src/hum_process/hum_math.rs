@@ -18,55 +18,95 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use std::collections::HashMap;
 
-static SAMPLE_RATE: u32 = 44_100;
-
-pub fn piano_key_frequencies(key: &str) -> HashMap<String, f32> {
-    let note_names_sharps = [
-        "An", "As", "Bn", "Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs",
-    ];
-
-    let note_names_flats = [
-        "An", "Bf", "Bn", "Cn", "Df", "Dn", "Ef", "En", "Fn", "Gf", "Gn", "Af",
-    ];
-
-    // Source: https://en.wikipedia.org/wiki/Piano_key_frequencies
-    let frequencies: Vec<f32> = (1..89)
-        .map(|k| (2 as f32).powf(((k as f32) - 49.0) / 12.0) * 440.0)
-        .collect();
-
-    let mut notes: HashMap<String, f32> = HashMap::new();
-
-    for i in 0..88 {
-        let octave = (i / 12).to_string();
-
-        let note_name = if key == "sharps" {
-            note_names_sharps[i % 12]
-        } else {
-            note_names_flats[i % 12]
-        };
-
-        let note = format!("{}_{}", note_name, octave);
-
-        notes.insert(note, frequencies[i]);
-    }
-
-    notes
-}
-
-pub fn make_wave(signal: &Fn(f32, &f32) -> f32, frequency: &f32, duration: f32) -> Vec<f32> {
-    let sample_rate = SAMPLE_RATE as f32;
-    let num_samples = (sample_rate * duration) as i64;
+pub fn generate_wave(signal: &Fn(f32, &f32) -> f32, frequency: &f32, duration: f32) -> Vec<f32> {
+    let sample_rate = 44_100_f32; // The number of samples per second
+    let num_samples = (sample_rate * duration) as usize;
+    // Find all of the time values in the wave and calculate the function of time (signal):
     (0..num_samples)
-        .map(|x| x as f32 / sample_rate)
-        .map(|t| signal(t, frequency))
-        .map(|s| {
-            if s > 1.0 {
+        .map(|sample_index| sample_index as f32 / sample_rate)
+        .map(|time_in_seconds| signal(time_in_seconds, frequency))
+        .map(|signal_value| {
+            // Clip all signal values outside of the allowable range:
+            if signal_value > 1.0 {
                 1.0
-            } else if s < -1.0 {
+            } else if signal_value < -1.0 {
                 -1.0
             } else {
-                s
+                signal_value
             }
         })
         .collect()
+}
+
+// Returns eight octaves of the standard 12 note scale tuned to A 440Hz:
+pub fn get_standard_note_frequencies(key: &str) -> HashMap<String, f32> {
+    let note_names = if key == "sharps" {
+        vec![
+            "Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs", "An", "As", "Bn",
+        ]
+    } else {
+        vec![
+            "Cn", "Df", "Dn", "Ef", "En", "Fn", "Gf", "Gn", "Af", "An", "Bf", "Bn",
+        ]
+    };
+
+    let lowest_octave = 0_u8;
+    let highest_octave = 7_u8;
+    let concert_pitch_name = "An";
+    let concert_pitch_octave = 4_u8;
+    let concert_pitch_frequency = 440_f32;
+
+    calculate_note_frequencies(
+        note_names,
+        lowest_octave,
+        highest_octave,
+        concert_pitch_name,
+        concert_pitch_octave,
+        concert_pitch_frequency,
+    )
+}
+
+// Calculates the frequencies of notes with an arbitrary scale and tuning (concert) pitch:
+fn calculate_note_frequencies(
+    note_names: Vec<&str>,
+    lowest_octave: u8,
+    highest_octave: u8,
+    concert_pitch_name: &str,
+    concert_pitch_octave: u8,
+    concert_pitch_frequency: f32,
+) -> HashMap<String, f32> {
+    assert!(
+        lowest_octave <= highest_octave,
+        "Hum ERR: the lowest octave is indexed higher than the highest octave."
+    );
+    assert!(
+        note_names.contains(&concert_pitch_name),
+        "Hum ERR: the concert pitch is not represented in the options for note names."
+    );
+    assert!(
+        concert_pitch_octave >= lowest_octave && concert_pitch_octave <= highest_octave,
+        "Hum ERR: the concert pitch octave is outside the range of possible octaves."
+    );
+
+    let notes_per_octave = note_names.len();
+    let root = 2_f32.powf(1_f32 / notes_per_octave as f32);
+
+    let concert_pitch_position = note_names
+        .iter()
+        .position(|&name| name == concert_pitch_name)
+        .unwrap();
+
+    let mut note_frequencies: HashMap<String, f32> = HashMap::new();
+
+    for octave in lowest_octave..(highest_octave + 1) {
+        for (position, note) in note_names.iter().enumerate() {
+            let name_offset = position as i32 - concert_pitch_position as i32;
+            let octave_offset = octave as i32 - concert_pitch_octave as i32;
+            let note_offset = name_offset + octave_offset * notes_per_octave as i32;
+            let frequency = concert_pitch_frequency * root.powi(note_offset);
+            note_frequencies.insert(format!("{}_{}", note, octave), frequency);
+        }
+    }
+
+    note_frequencies
 }
