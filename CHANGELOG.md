@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support for rests (silent notes).
 - Sawtooth wave voice.
+- New scale \*.hum example.
 
 ### Changed
 - Hum Language API: Octaves now roll over on "C natural" instead of "A natural".
