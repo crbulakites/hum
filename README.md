@@ -89,7 +89,7 @@ Hum files are regular and procedural in nature. They consist of a series of sent
 
 - Note Commands:
 
-  There are currently _88_ possible note commands corresponding to the keys on a standard grand piano. The note commands are formatted like so: `{note name}_{octave}`. If you set your key value to sharps, then these are the possible note names:
+  There are currently _96_ possible note commands corresponding roughly to the keys on a grand piano. The note commands are formatted like so: `{note name}_{octave}`. If you set your key value to sharps, then these are the possible note names:
 
   `["Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs", "An", "As", "Bn"]`
 
