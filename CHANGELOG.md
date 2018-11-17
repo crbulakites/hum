@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2018-11-17
+### Added
+- Support for rests (silent notes).
+- Sawtooth wave voice.
+
+### Changed
+- Hum Language API: Octaves now roll over on "C natural" instead of "A natural".
+- Documentation and examples to demonstrate new API.
+
+### Fixed
+- Incorrect output on unknown note error.
+
 ## [0.1.3] - 2018-11-15
 ### Fixed
 - Error in CHANGELOG formatting on 2018-11-15 `Removed` header.
