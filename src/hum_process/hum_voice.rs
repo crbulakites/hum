@@ -18,6 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use std::f32::consts::PI;
 
+pub fn silence(_: f32, _: &f32) -> f32 {
+    0.0 // coerce every value to 0
+}
+
 pub fn sine(time: f32, frequency: &f32) -> f32 {
     (time * frequency * 2.0 * PI).sin()
 }

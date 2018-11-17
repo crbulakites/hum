@@ -91,19 +91,17 @@ Hum files are regular and procedural in nature. They consist of a series of sent
 
   There are currently _88_ possible note commands corresponding to the keys on a standard grand piano. The note commands are formatted like so: `{note name}_{octave}`. If you set your key value to sharps, then these are the possible note names:
 
-  `["An", "As", "Bn", "Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs"]`
+  `["Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs", "An", "As", "Bn"]`
 
   If you set your key value to flats, then these are the possible note names:
 
-  `["An", "Bf", "Bn", "Cn", "Df", "Dn", "Ef", "En", "Fn", "Gf", "Gn", "Af"]`
+  `["Cn", "Df", "Dn", "Ef", "En", "Fn", "Gf", "Gn", "Af", "An", "Bf", "Bn"]`
 
-  In this style, "n" refers to "natural," "s" refers to "sharp," and "f" refers to "flat." Additionally, the octave part of a note can range from 0 to 7, with the lowest possible note being `An_0` and the highest possible note being `Cn_7`.
+  In this style, "n" refers to "natural," "s" refers to "sharp," and "f" refers to "flat." Additionally, the octave part of a note can range from 0 to 7, with the lowest possible note being `Cn_0` and the highest possible note being `Bn_7`.
 
-  NOTE: Octave numbers roll over on A natural, so this is how part of the sequence of notes in order of pitch goes: `Gn_4, Gs_4, An_5, As_5, etc...`.
+  NOTE: Octave numbers roll over on C natural, so this is how part of the sequence of notes in order of pitch goes: `An_4, As_4, Bn_4, Cn_5, Cs_5, Dn_5, etc...`.
 
-  ALSO––I HAVE JUST NOTICED ON WIKIPEDIA: the traditional convention seems to be to roll over the octave number on C natural instead of A... so that may have to change in version 0.2.0 🧐...
-
-  There is also a special note called `Rest` which corresponds to silence within a single voice, but it _has not yet been implemented_.
+  There is also a special note called `Rest` which corresponds to silence within a single voice.
 
   If you use a note value that is not recognized, the current behavior is to not insert the note, which will throw off the timing of your measure. I will work on fixing this in a later version.
 
@@ -124,11 +122,11 @@ Hum files are regular and procedural in nature. They consist of a series of sent
   Cn_4: 1/3. En_4: 1/3. Gn_4: 1/3.
   #: Here's a chord with three voices playing one note per measure.
   Voice: sine.
-  Cn_3: 3/3.
+  Cn_4: 3/3.
   Voice: sine.
-  En_3: 3/3.
+  En_4: 3/3.
   Voice: sine.
-  Gn_3: 3/3.
+  Gn_4: 3/3.
 
   #: Let's repeat that without comments.
 
@@ -136,11 +134,23 @@ Hum files are regular and procedural in nature. They consist of a series of sent
   Voice: square.
   Cn_4: 1/3. En_4: 1/3. Gn_4: 1/3.
   Voice: sine.
-  Cn_3: 3/3.
+  Cn_4: 3/3.
   Voice: sine.
-  En_3: 3/3.
+  En_4: 3/3.
   Voice: sine.
-  Gn_3: 3/3.
+  Gn_4: 3/3.
+
+  #: Now let's try to use a rest.
+
+  Measure: 3.
+  Voice: square.
+  Cn_4: 1/3. Rest: 1/3. Gn_4: 1/3.
+  Voice: sine.
+  Cn_4: 3/3.
+  Voice: sine.
+  En_4: 3/3.
+  Voice: sine.
+  Gn_4: 3/3.
   ```
 
 Why Did I Make This?
@@ -149,4 +159,4 @@ I thought it was cool, and I've never programmed a large project in Rust before,
 
 Why the Choice of License?
 ==========================
-I originally imagined this project acting as more of a standalone application as opposed to a library, and I would like it to remain open, so I felt that the GPLv3 was a good fit. I have decided that I will add a programming-based API in the future, though. If anybody actually starts contributing to or using this code and wants to convince me to release it under an alternative license, then just contact me, and I am open to having a conversation regarding the matter 🙂. For more insight on what you currently _are_ and _aren't_ allowed to do with this code, you can read more about the terms of the GPL at [the GNU website](https://www.gnu.org/licenses/licenses.html). 
+I originally imagined this project acting as more of a standalone application as opposed to a library, and I would like it to remain open, so I felt that the GPLv3 was a good fit. I have decided that I will add a programming-based API in the future, though. If anybody actually starts contributing to or using this code and wants to convince me to release it under an alternative license, then just contact me, and I am open to having a conversation regarding the matter 🙂. For more insight on what you currently _are_ and _aren't_ allowed to do with this code, you can read more about the terms of the GPL at [the GNU website](https://www.gnu.org/licenses/licenses.html).

@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 use std::collections::HashMap;
+use std::f32::NAN;
 
 pub fn generate_wave(signal: &Fn(f32, &f32) -> f32, frequency: &f32, duration: f32) -> Vec<f32> {
     let sample_rate = 44_100_f32; // The number of samples per second
@@ -107,6 +108,9 @@ fn calculate_note_frequencies(
             note_frequencies.insert(format!("{}_{}", note, octave), frequency);
         }
     }
+
+    // Insert the "rest" note with a frequency of "not a number":
+    note_frequencies.insert("Rest".to_string(), NAN);
 
     note_frequencies
 }

@@ -146,10 +146,15 @@ fn add_note_to_track(
     track: &mut Vec<f32>, // Master audio track to be mutated
 ) {
     // Generate the appropriate waveform for the note:
-    let note = match voice {
-        "square" => hum_math::generate_wave(&hum_voice::square, frequency, duration),
-        "sawtooth" => hum_math::generate_wave(&hum_voice::sawtooth, frequency, duration),
-        _ => hum_math::generate_wave(&hum_voice::sine, frequency, duration),
+    let note = if frequency.is_nan() {
+        // A frequency of NAN corresponds to a rest:
+        hum_math::generate_wave(&hum_voice::silence, frequency, duration)
+    } else {
+        match voice {
+            "square" => hum_math::generate_wave(&hum_voice::square, frequency, duration),
+            "sawtooth" => hum_math::generate_wave(&hum_voice::sawtooth, frequency, duration),
+            _ => hum_math::generate_wave(&hum_voice::sine, frequency, duration),
+        }
     };
 
     // Find the start sample for the note and the duration in number of samples:
