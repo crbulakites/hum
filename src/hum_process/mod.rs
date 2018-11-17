@@ -128,7 +128,7 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
                     }
                     // If the note isn't recognized:
                     None => {
-                        println!("ERROR: cannot make sense of note {}.", value);
+                        println!("ERROR: cannot make sense of note {}.", command);
                     }
                 };
             }
