@@ -16,8 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-mod hum_io;
-mod hum_process;
+extern crate hum;
 use std::env;
 
 fn main() {
@@ -29,10 +28,7 @@ fn main() {
 
         println!("Transcribing score...");
 
-        let score_contents = hum_io::read_hum(filename);
-        let waveform = hum_process::parse_score(score_contents);
-
-        hum_io::write_wav(waveform, outfname);
+        hum::convert_to_wav(filename, outfname);
 
         println!("Finished!");
 

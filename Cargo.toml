@@ -1,6 +1,6 @@
 [package]
 name = "hum"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Connor Bulakites <connor@bulakites.net>"]
 include = [
     "**/*.rs",
@@ -16,6 +16,14 @@ readme = "README.md"
 keywords = ["music", "notation", "synthesizer", "sine", "wave"]
 categories = ["multimedia", "multimedia::audio"]
 license = "GPL-3.0-or-later"
+
+[lib]
+name = "hum"
+path = "src/lib.rs"
+
+[[bin]]
+name = "hum"
+path = "src/main.rs"
 
 [badges]
 maintenance = { status = "experimental" }
