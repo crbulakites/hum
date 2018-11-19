@@ -23,7 +23,7 @@ path = "src/lib.rs"
 
 [[bin]]
 name = "hum"
-path = "src/main.rs"
+path = "src/bin.rs"
 
 [badges]
 maintenance = { status = "experimental" }
