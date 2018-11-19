@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI API: add the ability to play hum files without exporting to WAV first.
 - Language API: make syntax more flexible and closer to traditional notation.
 
+## [0.2.1] - 2018-11-18
+### Added
+- The ability to use Hum as a Rust library.
+
+### Changed
+- README to reflect addition of library functionality.
+
 ## [0.2.0] - 2018-11-17
 ### Added
 - Support for rests (silent notes).
