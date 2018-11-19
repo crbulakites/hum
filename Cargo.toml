@@ -26,7 +26,7 @@ name = "hum"
 path = "src/bin.rs"
 
 [badges]
-maintenance = { status = "experimental" }
+maintenance = { status = "actively-developed" }
 
 [dependencies]
 hound = "3.4.0"
