@@ -1,5 +1,5 @@
-Hum Music Synthesis Language 👄
-===============================
+Hum 👄
+======
 A music notation language and synthesizer written in Rust.
 
 Hum converts \*.hum files to playable \*.wav files.
