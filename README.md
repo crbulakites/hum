@@ -1,13 +1,12 @@
 Hum 👄
-===
+=====
 A music notation language and synthesizer written in Rust.
 
 Hum converts \*.hum files to playable \*.wav files.
 
-_This project is in early development, and its public API is possibly subject to
-breaking changes at any time. If I knowingly make a breaking change, I will
-update the MINOR version in the semantic versioning scheme, where the version
-numbers are MAJOR.MINOR.PATCH._
+_This project is in early development, and its public API is possibly subject to breaking changes at any time. If I knowingly make a breaking change, I will update the MINOR version in the semantic versioning scheme, where the version numbers are MAJOR.MINOR.PATCH._
+
+_DISCLAIMER: This program produces sound output in the form of \*.wav files, and it is not yet considered stable. You should turn down your volume before experimenting with sound output to protect your ears and speakers._
 
 Building the Project
 --------------------
@@ -41,15 +40,13 @@ Now you can use hum like any other CLI tool. For example, presuming the file `da
 
 Using Hum as a Library
 ----------------------
-You can also use Hum as a library in your own Rust programs. As of now, there is one method which implements the functionality of the CLI tool:
+You can also use Hum as a library in your own Rust programs. Right now, there is one method which implements the functionality of the CLI tool:
 
-`extern crate hum;
+```
+extern crate hum;
 ...
-hum::convert_to_wav(filename, outfname);`
-
-DISCLAIMER:
------------
-This program produces sound output in the form of \*.wav files, and it is not yet considered stable. I have tried to limit the volume in the code, but you should turn your volume down before experimenting with sound output. Keep in mind that the current behavior is for a track to become louder as you add more voices to a measure. I don't want anybody to hurt their ears or speakers while using the program!
+hum::convert_to_wav(filename, outfname);
+```
 
 An Explanation of the Hum Music Notation Language:
 --------------------------------------------------
@@ -167,4 +164,4 @@ I thought it was cool, and I've never programmed a large project in Rust before,
 
 Why the Choice of License?
 ==========================
-I originally imagined this project acting as more of a standalone application as opposed to a library, and I would like it to remain open, so I felt that the GPLv3 was a good fit. I have decided that I will add a programming-based API in the future, though. If anybody actually starts contributing to or using this code and wants to convince me to release it under an alternative license, then just contact me, and I am open to having a conversation regarding the matter 🙂. For more insight on what you currently _are_ and _aren't_ allowed to do with this code, you can read more about the terms of the GPL at [the GNU website](https://www.gnu.org/licenses/licenses.html).
+For more insight on what you currently _are_ and _aren't_ allowed to do with this code, you can read more about the terms of the GPL at [the GNU website](https://www.gnu.org/licenses/licenses.html). If anybody actually starts contributing to or using this code and wants to convince me to release it under an alternative license, then just contact me, and I am open to having a conversation regarding the matter 🙂.
