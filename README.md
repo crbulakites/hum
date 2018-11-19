@@ -39,6 +39,14 @@ Now you can use hum like any other CLI tool. For example, presuming the file `da
 
 `hum daisy.hum daisy.wav`
 
+Using Hum as a Library
+----------------------
+You can also use Hum as a library in your own Rust programs. As of now, there is one method which implements the functionality of the CLI tool:
+
+`extern crate hum;
+...
+hum::convert_to_wav(filename, outfname);`
+
 DISCLAIMER:
 -----------
 This program produces sound output in the form of \*.wav files, and it is not yet considered stable. I have tried to limit the volume in the code, but you should turn your volume down before experimenting with sound output. Keep in mind that the current behavior is for a track to become louder as you add more voices to a measure. I don't want anybody to hurt their ears or speakers while using the program!
