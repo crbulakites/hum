@@ -1,0 +1,6 @@
+Rust PortAudio v0.7.0 is an external dependency linked via crates.io which
+provides Rust bindings to PortAudio which provides cross-platform audio
+streaming capabilities. It is licensed under the MIT License.
+
+Rust PortAudio author: Jeremy Letang
+Rust PortAudio source: https://github.com/RustAudio/rust-portaudio
