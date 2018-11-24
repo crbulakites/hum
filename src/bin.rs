@@ -16,28 +16,31 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#[macro_use]
+
+extern crate clap;
 extern crate hum;
-use std::env;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let matches = clap::clap_app!(hum_app =>
+        (version: "0.3.0")
+        (author: "Connor Bulakites <connor@bulakites.net>")
+        (about: "A music notation language and synthesizer written in Rust.")
+        (@arg INPUT: +required "Sets the path of the hum notation file.")
+        (@arg OUTPUT: -o --output +takes_value "Optionally sets the path of an output WAV file.")
+    ).get_matches();
 
-    if args.len() > 1 {
-        let filename = &args[1];
-        //let outfname = &args[2];
+    let input = matches.value_of("INPUT").unwrap();
+    let output = matches.value_of("OUTPUT").unwrap_or("");
 
-        //hum::convert_to_wav(filename, outfname);
-
-        match hum::play(filename) {
+    if output == "" {
+        match hum::play(input) {
             Ok(_) => {},
             e => {
                 eprintln!("Audio stream failed with the following: {:?}", e);
             }
         };
     } else {
-        println!(
-            "Two arguments are required in order: 1) the path of the hum score file and \
-             2) the path of the output WAV file."
-        );
+        hum::convert_to_wav(input, output);
     }
 }

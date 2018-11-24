@@ -29,5 +29,6 @@ path = "src/bin.rs"
 maintenance = { status = "actively-developed" }
 
 [dependencies]
+clap = "2.32.0"
 hound = "3.4.0"
 portaudio = "0.7.0"
