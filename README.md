@@ -8,6 +8,7 @@ _This project is in early development, and its public API is possibly subject to
 
 _DISCLAIMER: This program produces sound output in the form of \*.wav files, and it is not yet considered stable. You should turn down your volume before experimenting with sound output to protect your ears and speakers._
 
+<a name="requirements"></a>
 Requirements
 ------------
 To stream audio, Hum depends on _PortAudio_, which you can download [here](http://www.portaudio.com/download.html). If you use Homebrew, you can use the commands `brew install portaudio` and `brew install pkg-config`, respectively.
@@ -39,11 +40,13 @@ To convert the included \*.hum file, "daisy.hum," to a file called "daisy.wav," 
 
 Installing the Latest Release
 -----------------------------
-To install the latest release as a CLI tool, first make sure that you have Cargo installed so that you can download the binary from crates.io:
+To install the latest release as a CLI tool, first make sure that you have fulfilled the requirements by [_installing PortAudio_](#requirements).
+
+Second, make sure that you have Cargo installed so that you can download the binary from crates.io:
 
 https://www.rust-lang.org/en-US/install.html
 
-Then run the following command in the terminal:
+Then you can run the following command in the terminal:
 
 `cargo install hum`
 
