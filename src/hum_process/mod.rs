@@ -117,12 +117,6 @@ pub fn parse_score(score_contents: String) -> Vec<f32> {
                             &mut track,     // Master audio track to be mutated
                         );
 
-                        // Provide a little bit of output for the user:
-                        println!(
-                            "Added note {} ({} Hz) at {} seconds.",
-                            command, note_frequency, note_position
-                        );
-
                         // Update the offset:
                         timestamp_offset_in_measure += note_duration;
                     }

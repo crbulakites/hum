@@ -22,21 +22,22 @@ use std::env;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    if args.len() > 2 {
+    if args.len() > 1 {
         let filename = &args[1];
-        let outfname = &args[2];
+        //let outfname = &args[2];
 
-        println!("Transcribing score...");
+        //hum::convert_to_wav(filename, outfname);
 
-        hum::convert_to_wav(filename, outfname);
-
-        println!("Finished!");
-
-        println!("DISCLAIMER: THIS PROGRAM IS NOT YET STABLE. PLEASE TURN DOWN YOUR VOLUME BEFORE \
-        PLAYING ANY OUTPUTTED WAV FILES TO PROTECT YOUR SPEAKERS AND HEARING, ESPECIALLY AFTER \
-        MODIFYING THE CODE YOURSELF. USE AT YOUR OWN RISK.");
+        match hum::play(filename) {
+            Ok(_) => {},
+            e => {
+                eprintln!("Audio stream failed with the following: {:?}", e);
+            }
+        };
     } else {
-        println!("Two arguments are required in order: 1) the path of the hum score file and \
-        2) the path of the output WAV file.");
+        println!(
+            "Two arguments are required in order: 1) the path of the hum score file and \
+             2) the path of the output WAV file."
+        );
     }
 }

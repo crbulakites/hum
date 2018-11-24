@@ -16,11 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+extern crate portaudio as pa;
+
 mod hum_io;
 mod hum_process;
 
-pub fn convert_to_wav(filename: &str, outfname: &str) {
-    let score_contents = hum_io::read_hum(filename);
+pub fn play(filename: &str) -> Result<(), pa::Error> {
+    let score_contents = hum_io::read(filename);
     let waveform = hum_process::parse_score(score_contents);
-    hum_io::write_wav(waveform, outfname);
+    hum_io::play(waveform)
+}
+
+pub fn convert_to_wav(filename: &str, outfname: &str) {
+    let score_contents = hum_io::read(filename);
+    let waveform = hum_process::parse_score(score_contents);
+    hum_io::save(waveform, outfname);
 }

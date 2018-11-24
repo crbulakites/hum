@@ -30,3 +30,4 @@ maintenance = { status = "actively-developed" }
 
 [dependencies]
 hound = "3.4.0"
+portaudio = "0.7.0"
