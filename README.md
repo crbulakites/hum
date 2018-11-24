@@ -10,7 +10,7 @@ _DISCLAIMER: This program produces sound output in the form of \*.wav files, and
 
 Requirements
 ------------
-To stream audio, Hum depends on _PortAudio_, which you can download [here](http://www.portaudio.com/download.html). If you use HomeBrew, you can use the commands `brew install portaudio` and `brew install pkg-config`, respectively.
+To stream audio, Hum depends on _PortAudio_, which you can download [here](http://www.portaudio.com/download.html). If you use Homebrew, you can use the commands `brew install portaudio` and `brew install pkg-config`, respectively.
 
 Building the Project
 --------------------
@@ -23,11 +23,11 @@ To test the project, use `cargo run` in the root directory.
 Hum has only one required command-line argument:
   1. the path of the \*.hum input file.
 
-If you only provide one argument, Hum will stream the audio to your speakers and not save any output. If you would like to save the audio to a WAV file, then you must provide an additional command line argument with the `-o` flag.
+If you only provide one argument, Hum will stream the audio to your speakers and not save any output. If you would like to save the audio to a WAV file, then you must provide an additional command-line argument with the `-o` flag.
 
 To save to a WAV file, hum requires two command-line arguments:
   1. the path of the \*.hum file
-  2. `-o ` + the desired path of the \*.wav file
+  2. `-o` + the desired path of the \*.wav file
 
 To play the included \*.hum file, "daisy.hum," use the following command in the root directory:
 
