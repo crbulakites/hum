@@ -6,8 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- CLI API: add the ability to play hum files without exporting to WAV first.
 - Language API: make syntax more flexible and closer to traditional notation.
+
+## [0.3.0] - 2018-11-24
+### Added
+- public `play` function to the library which streams audio directly to speakers.
+- ability to stream audio from hum files directly in the CLI app.
+
+### Changed
+- CLI API: new syntax for picking between streaming audio and saving to WAV.
 
 ## [0.2.1] - 2018-11-18
 ### Added
