@@ -4,12 +4,14 @@ version = "0.3.0"
 authors = ["Connor Bulakites <connor@bulakites.net>"]
 include = [
     "**/*.rs",
+    "**/*.rustpeg",
     "Cargo.toml",
     "LICENSE",
     "DISCLAIMER",
     "README.md",
     "EXTERNAL_DEPENDENCY_LICENSES/*",
 ]
+build = "build.rs"
 description = "A music notation language and synthesizer written in Rust."
 repository = "https://github.com/crbulakites/hum"
 readme = "README.md"
@@ -32,3 +34,6 @@ maintenance = { status = "actively-developed" }
 clap = "2.32.0"
 hound = "3.4.0"
 portaudio = "0.7.0"
+
+[build-dependencies]
+peg = "0.5"

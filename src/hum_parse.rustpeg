@@ -1,0 +1,78 @@
+/*
+Hum: A Music Markup Language Synthesizer
+Copyright (C) 2018 Connor R. Bulakites
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+pub score -> Vec<(String, String)>
+    = commands:command* {
+        commands
+    }
+
+command -> (String, String)
+    = comment
+    / tempo
+    / time
+    / cursor_reset
+    / voice
+    / measure_start
+    / note
+
+comment -> (String, String)
+    = ws* ";" text:$([^\n]*) eol {
+        ("comment".to_string(), text.trim().to_string())
+    }
+
+tempo -> (String, String)
+    = ws* "[" ws* text:$([0-9]*) "_bpm" ws* "]" ws* {
+        ("tempo".to_string(), text.to_string())
+    }
+
+time -> (String, String)
+    = ws* "[" ws* text:$([0-9/]*) ws* "]" ws* {
+        ("time".to_string(), text.to_string())
+    }
+
+cursor_reset -> (String, String)
+    = ws* "*"+ ws* {
+        // The second value doesn't matter for this one :)
+        ("cursor_reset".to_string(), "∠(ᐛ 」∠)＿".to_string())
+    }
+
+voice -> (String, String)
+    = ws* "%" ws* text:$([a-zA-Z0-9_]+) ws* {
+        ("voice".to_string(), text.to_string())
+    }
+
+measure_start -> (String, String)
+    = ws* "|" ws* {
+        // The second value doesn't matter for this one :)
+        ("measure_start".to_string(), "(*￣▽￣*)θ～♪".to_string())
+    }
+
+note -> (String, String)
+    = ws* "(" ws* name:$([a-zA-Z0-9_]+) ws+ length:$([0-9/]*) ws* ")" dots:$("+"*) ws* {
+        (name.to_string(), format!("{}{}", length, dots).to_string())
+    }
+
+ws
+    = " "
+    / "\t"
+    / "\r"
+    / "\n"
+
+eol
+    = "\n"
+    / !. // "End of file"
