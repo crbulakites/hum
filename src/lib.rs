@@ -21,14 +21,38 @@ extern crate portaudio as pa;
 mod hum_io;
 mod hum_process;
 
+mod hum_parse {
+    include!(concat!(env!("OUT_DIR"), "/hum_parse.rs"));
+}
+
 pub fn play(filename: &str) -> Result<(), pa::Error> {
     let score_contents = hum_io::read(filename);
-    let waveform = hum_process::parse_score(score_contents);
-    hum_io::play(waveform)
+    let score_commands = hum_parse::score(&score_contents[..]);
+    match score_commands {
+        Ok(value) => {
+            let waveform = hum_process::run_commands(value);
+            hum_io::play(waveform)
+        }
+        Err(error) => {
+            eprintln!("Error parsing grammar: {}", error);
+            let waveform = vec![0_f32];
+            hum_io::play(waveform)
+        }
+    }
 }
 
 pub fn convert_to_wav(filename: &str, outfname: &str) {
     let score_contents = hum_io::read(filename);
-    let waveform = hum_process::parse_score(score_contents);
-    hum_io::save(waveform, outfname);
+    let score_commands = hum_parse::score(&score_contents[..]);
+    match score_commands {
+        Ok(value) => {
+            let waveform = hum_process::run_commands(value);
+            hum_io::save(waveform, outfname);
+        }
+        Err(error) => {
+            eprintln!("Error parsing grammar: {}", error);
+            let waveform = vec![0_f32];
+            hum_io::save(waveform, outfname);
+        }
+    }
 }

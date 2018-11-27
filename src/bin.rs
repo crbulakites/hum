@@ -21,13 +21,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 extern crate clap;
 extern crate hum;
 
-use std::fs::File;
-use std::io::prelude::*;
-
-mod hum_parse {
-    include!(concat!(env!("OUT_DIR"), "/hum_parse.rs"));
-}
-
 fn main() {
     let matches = clap::clap_app!(hum_app =>
         (version: "0.3.0")
@@ -42,27 +35,12 @@ fn main() {
     let output = matches.value_of("OUTPUT").unwrap_or("");
 
     if output == "" {
-        /*
         match hum::play(input) {
             Ok(_) => {},
             e => {
                 eprintln!("Audio stream failed with the following: {:?}", e);
             }
         };
-        */
-        let mut file = File::open(input).expect("Unable to open the file");
-        let mut contents = String::new();
-        file.read_to_string(&mut contents)
-            .expect("Unable to read the file");
-        let parsed = hum_parse::score(&contents[..]);
-        match parsed {
-            Ok(v) => {
-                for command in v {
-                    println!("{}: {}", command.0, command.1)
-                }
-            }
-            Err(e) => eprintln!("error parsing grammar: {}", e),
-        }
     } else {
         hum::convert_to_wav(input, output);
     }

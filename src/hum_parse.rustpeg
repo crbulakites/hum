@@ -25,18 +25,19 @@ command -> (String, String)
     = comment
     / tempo
     / time
-    / cursor_reset
+    / checkpoint
     / voice
-    / measure_start
+    / measure
+    / reset
     / note
 
 comment -> (String, String)
-    = ws* ";" text:$([^\n]*) eol {
+    = ws* "~" text:$([^\n]*) eol {
         ("comment".to_string(), text.trim().to_string())
     }
 
 tempo -> (String, String)
-    = ws* "[" ws* text:$([0-9]*) "_bpm" ws* "]" ws* {
+    = ws* "[" ws* text:$([0-9]+) "_bpm" ws* "]" ws* {
         ("tempo".to_string(), text.to_string())
     }
 
@@ -45,10 +46,10 @@ time -> (String, String)
         ("time".to_string(), text.to_string())
     }
 
-cursor_reset -> (String, String)
+checkpoint -> (String, String)
     = ws* "*"+ ws* {
         // The second value doesn't matter for this one :)
-        ("cursor_reset".to_string(), "∠(ᐛ 」∠)＿".to_string())
+        ("checkpoint".to_string(), "(｡^‿^｡)".to_string())
     }
 
 voice -> (String, String)
@@ -56,10 +57,16 @@ voice -> (String, String)
         ("voice".to_string(), text.to_string())
     }
 
-measure_start -> (String, String)
+measure -> (String, String)
     = ws* "|" ws* {
         // The second value doesn't matter for this one :)
-        ("measure_start".to_string(), "(*￣▽￣*)θ～♪".to_string())
+        ("measure".to_string(), "(｡￣▽￣｡)θ～♪♪".to_string())
+    }
+
+reset -> (String, String)
+    = ws* ";" ws_not_newline* eol {
+        // The second value doesn't matter for this one :)
+        ("reset".to_string(), "ヽ(｡＾▽＾｡)ノ".to_string())
     }
 
 note -> (String, String)
@@ -69,6 +76,7 @@ note -> (String, String)
 
 ws
     = " "
+    / "-" // Special whitespace character allowed in hum scores
     / "\t"
     / "\r"
     / "\n"
@@ -76,3 +84,9 @@ ws
 eol
     = "\n"
     / !. // "End of file"
+
+ws_not_newline
+    = " "
+    / "-" // Special whitespace character allowed in hum scores
+    / "\t"
+    / "\r"

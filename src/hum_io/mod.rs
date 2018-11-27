@@ -36,12 +36,6 @@ pub fn read(filename: &str) -> String {
         .read_to_string(&mut score_contents)
         .expect("Something went wrong reading the score file.");
 
-    let score_contents = score_contents
-        .replace(" ", "")
-        .replace("\t", "")
-        .replace("\r", "")
-        .replace("\n", "");
-
     score_contents
 }
 
