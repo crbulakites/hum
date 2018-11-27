@@ -164,7 +164,7 @@ pub fn run_commands(score_commands: Vec<(String, String)>) -> Vec<f32> {
                     }
                     // If the note isn't recognized:
                     None => {
-                        println!("ERROR: cannot make sense of note {}.", verb);
+                        println!("ERROR: there is no note named {}.", verb);
                     }
                 }
             }

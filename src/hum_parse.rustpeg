@@ -64,7 +64,7 @@ measure -> (String, String)
     }
 
 reset -> (String, String)
-    = ws* ";" ws_not_newline* eol {
+    = ws* ";" ws_not_newline* [^\n]* eol {
         // The second value doesn't matter for this one :)
         ("reset".to_string(), "ヽ(｡＾▽＾｡)ノ".to_string())
     }

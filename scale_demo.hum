@@ -1,0 +1,28 @@
+~ You can comment-out the rest of line using the tilde character
+~ In this example, we'll play a scale on square and a drone on sine
+
+[ 90_bpm ][ 4/4 ] ~ You can set your tempo and time signature with brackets
+******************************************************* ~ reset checkpoint
+% square ~ You can switch the voice using the divide symbol
+| - (Cn_2 1/4) - (Dn_2 1/4) - (En_2 1/4) - (Fn_2 1/4) -
+| - (Gn_2 1/4) - (An_2 1/4) - (Bn_2 1/4) - (Cn_3 1/4) -
+| - (Dn_3 1/4) - (En_3 1/4) - (Fn_3 1/4) - (Gn_3 1/4) -
+| - (An_3 1/4) - (Bn_3 1/4) - (Cn_4 1/2) --------------
+| - (Cn_4 1/4) - (Dn_4 1/4) - (En_4 1/4) - (Fn_4 1/4) -
+| - (Gn_4 1/4) - (An_4 1/4) - (Bn_4 1/4) - (Cn_5 1/4) -
+| - (Dn_5 1/4) - (En_5 1/4) - (Fn_5 1/4) - (Gn_5 1/4) -
+| - (An_5 1/4) - (Bn_5 1/4) - (Cn_6 1/2) ------------ ; ~ reset trigger
+
+~ The reset trigger lets you begin recording a new voice from the checkpoint
+% sine
+| - (Cn_4 4/4) ----------------------------------------
+| - (Cn_4 4/4) ----------- ~ minus signs are whitespace
+| - (Cn_4 4/4) ----------------------------------------
+| - (Cn_4 4/4) -- ~ they're just here to look pretty :)
+| - (Cn_4 4/4) ----------------------------------------
+| - (Cn_4 4/4) ----------------------------------------
+| - (Cn_4 4/4) ----------------------------------------
+| - (Cn_4 4/4) -------------------------------------- ;
+
+~ Although you don't have to, you should always end a voice's part with a reset
+~ The number of measures you write per checkpoint is totally up to you
