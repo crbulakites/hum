@@ -1,0 +1,6 @@
+Rust Peg v0.5 is an external dependency linked via crates.io which allows us
+to concisely define grammars and generate parsers from them. It is licensed
+under the MIT License.
+
+Rust Peg author: Kevin Mehall
+Rust Peg source: https://github.com/kevinmehall/rust-peg

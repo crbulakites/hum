@@ -56,7 +56,7 @@ Now you can use hum like any other CLI tool. For example, presuming the file `da
 
 Using Hum as a Library
 ----------------------
-You can also use Hum as a library in your own Rust programs. Right now, there is two methods which implement the functionality of the CLI tool:
+You can also use Hum as a library in your own Rust programs. Right now, there are two methods which implement the functionality of the CLI tool:
 
 ```
 extern crate hum;
@@ -64,116 +64,87 @@ extern crate hum;
 hum::play(input)
 hum::convert_to_wav(input, output);
 ```
-
 An Explanation of the Hum Music Notation Language:
 --------------------------------------------------
-Hum files are regular and procedural in nature. They consist of a series of sentences separated by the "." character. Each sentence consists of two clauses separated by the ":" character. The first clause is the command, and the second clause is the value. I haven't implemented much error handling yet, so if you don't have exactly one ":" for every "."––or you use an unknown command or value pattern––it's very possible that the program will crash or produce unexpected output.
+The Hum music notation language is intended to be easily interpreted by human musicians and computers. It is still in early development and subject to change, but here is a brief explanation of the features available so far. I also encourage you to look at the included example files and modify them to help you understand how it works. First off, here is what the language looks like:
 
-### List of currently available commands:
+```
+~ DAISY BELL by Harry Dacre
+~ Based on an 1892 print in The Johns Hopkins University Lester S Levy Sheet Music Collection
+~ Arranged by Connor Bulakites to demonstrate the Hum Synthesizer
 
-- `#`:
+[ 180_bpm ][ 3/4 ]
 
-  This is the comment command. These sentences are ignored by the synthesizer and are intended for including annotations in the score.
+***********************************************************************
 
-  Example: `#: This is a comment.`
+% square
+| (Dn_5 1/2)+ -------------------- | (Bn_4 1/2)+ -------------------- ;
+~ Dai-                             ~ sy!
 
-  Note that at this time, the ":" and "." character are not supported in comments. Including them will likely cause the program to panic.
+% sine
+| (Rest 1/4) (Bn_4 1/4) (Bn_4 1/4) | (Rest 1/4) (Gn_4 1/4) (Gn_4 1/4) ;
+| (Rest 1/4) (Gn_4 1/4) (Gn_4 1/4) | (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) ;
+| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) ;
+| (Dn_4 1/2)+ -------------------- | (Bn_3 1/2)+ -------------------- ;
 
-- `Tempo`:
+% sawtooth
+| (Gn_2 1/2)+ -------------------- | (Dn_2 1/2)+ -------------------- ;
 
-  This is the tempo command. It sets the tempo of the project. It requires an _integer value_.
 
-  Example: `Tempo: 90.` (this corresponds to 90 beats per minute)
+***********************************************************************
 
-- `Key`:
+% square
+| (Gn_4 1/2)+ -------------------- | (Dn_4 1/2)+ -------------------- ;
+~ Dai-                             ~ sy!
 
-  This is the key command. It accepts two possible text values: `sharps` or `flats`. This just allows you to specify whether you want your score to use sharp notes or flat notes.
+% sine
+| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
+| (Gn_3 1/2)+ -------------------- | (Dn_3 1/2)+ -------------------- ;
 
-  Example: `Key: sharps.`
+% sawtooth
+| (Bn_1 1/2)+ -------------------- | (Gn_1 1/2)+ -------------------- ;
+```
 
-  Note that there is no support for mixing sharps and flats at this time.
+Now for some explanation of what you're seeing:
 
-- `Measure`:
+- The tilde `~` indicates a single-line comment. Everything that appears after this symbol on a line is ignored by the computer. I use this both for annotations and for lyrics.
 
-  This is the measure command. It specifies the beginning of a new measure in the score. It requires an _integer value_ corresponding to the number of beats in the measure.
+- The tempo tag `[ 100_bpm ]` sets the tempo of the song to 100 _beats per minute_. You can change the numeric portion to change the tempo, but you must keep the `_bpm` suffix. You can change the tempo partway through a song by putting another tempo tag between any two measures.
 
-  Example: `Measure: 3.` (this starts a new measure which contains three beats)
+- The time signature tag `[ 3/4 ]` sets the time signature of the music. The numerator corresponds to the number of beats per measure, and the denominator corresponds to the reciprocal of the length value of one beat. So in 3/4 time, there are 3 beats with length 1/4 per measure. For a more in depth explanation of time signatures, see: https://en.wikipedia.org/wiki/Time_signature.
 
-  Note that the measure command should never come before the tempo or key commands. I need to implement a real parser to ensure that the user can't do this.
+- The line of asterisks `*` indicates a write checkpoint. You should have at least one of these before your first measure. _All lines of music written before the next checkpoint are presumed to occur concurrently_. Lines of music written after the next checkpoint are presumed to start immediately after the last measure in the previous checkpoint. The number of measures or horizontal columns of music you allow per checkpoint and the total number of checkpoints you use are a matter of style and up to you. In the included examples, I put two measures per checkpoint because it fits nicely on an 80-column terminal screen, but you are under no obligation to follow this convention. Additionally, the number of asterisks in the checkpoint line is also a matter of style (you just have to have at least one).
 
-- `Voice`:
+- The division sign `%` is used to switch the voice or "instrument" of lines of music. When you switch to a voice, all lines of music underneath the command will be played with that voice until you switch the voice again. As of now, there are three supported voices: `sine`, `square`, and `sawtooth`.
 
-  This is the voice command. It specifies the beginning of notation for a single "instrument" at the beginning of the last declared measure. In other words, a voice is monophonic. To achieve polyphonic sound, you need multiple voice commands under one measure command. See the included `daisy.hum` file for several examples of this. Every time you create a new voice, notation begins at the beginning of the last declared measure. You can include as many voices as you want per measure, and each measure is _not_ required to have the same number of voices. Be careful about including more than about five or so voices at any given time, though, because I have not implemented volume controls yet, and the base volume of each voice compounds (adds) on top of the others. If you use too many voices at this point, the audio might clip (this essentially means that it will "max out" in volume and become distorted).
+- The pipe operator `|` indicates the start of a new measure. To ensure that your music is played back correctly, _you must start every measure with the pipe operator_. Additionally, you should make sure that lengths of notes and rests in your measure add up to the value of the current time signature. Otherwise, music from one measure may bleed over incorrectly into another measure.
 
-  The voice command requires a text argument corresponding to the wave type or instrument sound which you want to play the part. Right now, there are three supported voices: `sine`, `square`, and `sawtooth`.
+- The semicolon `;` serves as the reset character. When a semicolon is encountered, Hum knows that you are done writing one line of music and want to start writing another line of music starting at the last checkpoint. Typically, _all lines of music after a checkpoint which are meant to be played concurrently should end in a semicolon_.
 
-  Example: `Voice: sine.`
+- Hum ignores minus signs `-`. Essentially, they're treated the same as whitespace. This is done to make it easier for you to vertically align concurrent lines of music within a checkpoint so that it is more readable to humans. Exactly how you choose to utilize this feature is up to your stylistic discretion.
 
-- Note Commands:
+- Finally, we must provide an explanation for notes:
 
-  There are currently _96_ possible note commands corresponding roughly to the keys on a grand piano. The note commands are formatted like so: `{note name}_{octave}`. If you set your key value to sharps, then these are the possible note names:
+  - A note consists of two values enclosed within parentheses and separated by a space. The first value is the note name, and the second value is the note length. The note length divided by the time signature determines the length of the measure that the note takes up. Within a single line of music, notes are added to a measure in succession, reading from left to right.
+
+  - The `+` operator can be appended to the end of a note outside the parentheses to increase the length of the note by one half of its original length value. This corresponds to a "dot" in traditional music notation. So, for example, the note (An_4 1/2)+ has a total length of `1/2 + 1/4 = 3/4`. You can append as many plus signs at the end of a note as you want to keep increasing the length value by one half its original value.
+
+  - There are currently _96_ possible note names corresponding roughly to the keys on a grand piano. The note names are formatted like so: `{pitch}_{octave}`. If you are writing in a key that uses sharps, these are the pitches that you should use:
 
   `["Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs", "An", "As", "Bn"]`
 
-  If you set your key value to flats, then these are the possible note names:
+  - If you are writing in a key that uses flats, these are the pitches that you should use:
 
   `["Cn", "Df", "Dn", "Ef", "En", "Fn", "Gf", "Gn", "Af", "An", "Bf", "Bn"]`
 
-  In this style, "n" refers to "natural," "s" refers to "sharp," and "f" refers to "flat." Additionally, the octave part of a note can range from 0 to 7, with the lowest possible note being `Cn_0` and the highest possible note being `Bn_7`.
+  - In this style, "n" refers to "natural," "s" refers to "sharp," and "f" refers to "flat." Although it's unusual, you can mix sharps and flats in the same song if you wish.
 
-  NOTE: Octave numbers roll over on C natural, so this is how part of the sequence of notes in order of pitch goes: `An_4, As_4, Bn_4, Cn_5, Cs_5, Dn_5, etc...`.
+  - Additionally, the octave part of a note can range from 0 to 7, with the lowest possible note being `Cn_0` and the highest possible note being `Bn_7`. Note that octave numbers roll over on C natural, so this is how part of the sequence of notes in order of pitch goes: `An_4, As_4, Bn_4, Cn_5, Cs_5, Dn_5, etc...`.
 
-  There is also a special note called `Rest` which corresponds to silence within a single voice.
+  - There is also a special note called `Rest` which corresponds to silence within a single voice.
 
-  If you use a note value that is not recognized, the current behavior is to not insert the note, which will throw off the timing of your measure. I will work on fixing this in a later version.
-
-  ...So that covers the possible note _commands_. Now for the possible note _values_:
-
-  A note value is simply a fraction in the form `{numerator}/{denominator}`. It evaluates to a floating point number, and it determines the _fraction of the measure_ that the note should fill. Remember that the first note under a voice command is positioned at the beginning of the measure. Therefore, to fill all of the space in the measure, all of the note _values_ should add up to at least _1.0_, else there will be silence at the end of the measure. If the note values _exceed 1.0_, then the note will bleed over into the next measure, but the notes that actually belong to the next measure will still start at the beginning of that measure. If this is confusing, I encourage you to play around with a couple of simple \*.hum files until you get the hang of it.
-
-  Putting it all together, here's a simple \*.hum file with two measures, one voice per measure playing the melody, and three voices per measure playing a C major chord:
-
-  ```
-  Tempo: 60.
-  Key: sharps.
-
-  #: Declare a measure with 3 beats.
-  Measure: 3.
-  #: Here's a melody with three notes evenly dividing the measure.
-  Voice: square.
-  Cn_4: 1/3. En_4: 1/3. Gn_4: 1/3.
-  #: Here's a chord with three voices playing one note per measure.
-  Voice: sine.
-  Cn_4: 3/3.
-  Voice: sine.
-  En_4: 3/3.
-  Voice: sine.
-  Gn_4: 3/3.
-
-  #: Let's repeat that without comments.
-
-  Measure: 3.
-  Voice: square.
-  Cn_4: 1/3. En_4: 1/3. Gn_4: 1/3.
-  Voice: sine.
-  Cn_4: 3/3.
-  Voice: sine.
-  En_4: 3/3.
-  Voice: sine.
-  Gn_4: 3/3.
-
-  #: Now let's try to use a rest.
-
-  Measure: 3.
-  Voice: square.
-  Cn_4: 1/3. Rest: 1/3. Gn_4: 1/3.
-  Voice: sine.
-  Cn_4: 3/3.
-  Voice: sine.
-  En_4: 3/3.
-  Voice: sine.
-  Gn_4: 3/3.
-  ```
+  - If you use a note value that is not recognized, the current behavior is to not insert the note, which will throw off the timing of your measure. I will work on fixing this in a later version.
 
 Why Did I Make This?
 ====================
