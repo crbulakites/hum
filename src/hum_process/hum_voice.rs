@@ -30,9 +30,9 @@ pub fn square(time: f32, frequency: &f32) -> f32 {
     let sine_value: f32 = sine(time, frequency);
 
     if sine_value >= 0.0 {
-        1.0
+        0.7
     } else {
-        -1.0
+        -0.7
     }
 }
 

@@ -1,6 +1,6 @@
-~ This is a sample file to demonstrate the Hum Synthesizer
+~ This is a simple sample file to demonstrate the Hum Synthesizer
 
-[ 100_bpm ][ 3/4 ]
+[ 80_bpm ][ 3/4 ]
 
 ***************************************************************************************
 % square

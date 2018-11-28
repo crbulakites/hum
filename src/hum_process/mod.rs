@@ -80,7 +80,7 @@ pub fn run_commands(score_commands: Vec<(String, String)>) -> Vec<f32> {
                 time_signature = numerator / denominator;
 
                 // The denominator of the time signature corresponds to the beats per measure:
-                beats_per_measure = denominator;
+                beats_per_measure = numerator;
                 measure_duration = beats_per_measure / beats_per_second;
             }
             "checkpoint" => {

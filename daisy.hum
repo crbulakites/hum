@@ -1,266 +1,240 @@
-#: DAISY BELL by Harry Dacre.
-#: Based on an 1892 print in The Johns Hopkins University Lester S Levy Sheet Music Collection.
-#: Rearranged by Connor Bulakites to demonstrate the Hum Synthesizer.
+~ DAISY BELL by Harry Dacre
+~ Based on an 1892 print in The Johns Hopkins University Lester S Levy Sheet Music Collection
+~ Arranged by Connor Bulakites to demonstrate the Hum Synthesizer
 
-Tempo: 182.
-Key: sharps.
+[ 180_bpm ][ 3/4 ]
 
-Measure: 3.
-Voice: square.
-Gn_5: 3/3.
-Voice: square.
-Cn_4: 1/3. En_4: 1/3. En_4: 1/3.
-Voice: square.
-Cn_4: 1/3. Gn_4: 1/3. Gn_4: 1/3.
+***********************************************************************
 
-Measure: 3.
-Voice: square.
-En_5: 3/3.
-Voice: square.
-Gn_3: 1/3. Cn_4: 1/3. Cn_4: 1/3.
-Voice: square.
-Gn_3: 1/3. En_4: 1/3. En_4: 1/3.
+% square
+| (Dn_5 1/2)+ -------------------- | (Bn_4 1/2)+ -------------------- ;
+~ Dai-                             ~ sy!
 
-Measure: 3.
-Voice: square.
-Cn_5: 3/3.
-Voice: square.
-En_3: 1/3. Gn_3: 1/3. Gn_3: 1/3.
-Voice: square.
-En_3: 1/3. Cn_4: 1/3. Cn_4: 1/3.
+% sine
+| (Rest 1/4) (Bn_4 1/4) (Bn_4 1/4) | (Rest 1/4) (Gn_4 1/4) (Gn_4 1/4) ;
+| (Rest 1/4) (Gn_4 1/4) (Gn_4 1/4) | (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) ;
+| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) ;
+| (Dn_4 1/2)+ -------------------- | (Bn_3 1/2)+ -------------------- ;
 
-Measure: 3.
-Voice: square.
-Gn_4: 3/3.
-Voice: square.
-Cn_4: 1/3. En_4: 1/3. En_4: 1/3.
-Voice: square.
-Cn_4: 1/3. Gn_4: 1/3. Gn_4: 1/3.
+% sawtooth
+| (Gn_2 1/2)+ -------------------- | (Dn_2 1/2)+ -------------------- ;
 
-Measure: 3.
-Voice: square.
-An_4: 1/3. Bn_4: 1/3. Cn_5: 1/3.
-Voice: square.
-An_4: 1/3. Bn_4: 1/3. Cn_4: 1/3.
-Voice: square.
-An_4: 1/3. Bn_4: 1/3. En_4: 1/3.
 
-Measure: 3.
-Voice: square.
-An_4: 2/3. Cn_5: 1/3.
-Voice: square.
-An_3: 2/3. Cn_4: 1/3.
+***********************************************************************
 
-Measure: 3.
-Voice: square.
-Gn_4: 3/3.
-Voice: square.
-Cn_3: 1/3. En_3: 1/3. En_3: 1/3.
-Voice: square.
-Cn_3: 1/3. Gn_3: 1/3. Gn_3: 1/3.
+% square
+| (Gn_4 1/2)+ -------------------- | (Dn_4 1/2)+ -------------------- ;
+~ Dai-                             ~ sy!
 
-Measure: 3.
-Voice: square.
-Gn_4: 3/3.
-Voice: square.
-Cn_3: 1/3. Gn_4: 1/3. Gn_4: 1/3.
-Voice: square.
-Cn_3: 1/3. Gn_3: 1/3. Gn_3: 1/3.
+% sine
+| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
+| (Gn_3 1/2)+ -------------------- | (Dn_3 1/2)+ -------------------- ;
 
-Measure: 3.
-Voice: square.
-Dn_5: 3/3.
-Voice: square.
-Dn_4: 1/3. Fs_4: 1/3. Fs_4: 1/3.
-Voice: square.
-Dn_4: 1/3. An_4: 1/3. An_4: 1/3.
+% sawtooth
+| (Bn_1 1/2)+ -------------------- | (Gn_1 1/2)+ -------------------- ;
 
-Measure: 3.
-Voice: square.
-Gn_5: 3/3.
-Voice: square.
-Gn_4: 1/3. Cn_5: 1/3. En_5: 1/3.
-Voice: square.
-Gn_4: 1/3. En_5: 1/3. En_5: 1/3.
+***********************************************************************
 
-Measure: 3.
-Voice: square.
-En_5: 3/3.
-Voice: square.
-En_5: 1/3. Cn_6: 1/3. Gn_5: 1/3.
-Voice: square.
-Gn_3: 1/3. Cn_4: 1/3. En_4: 1/3.
+% square
+| (En_4 1/4) (Fs_4 1/4) (Gn_4 1/4) | (En_4 1/2) ---------- (Gn_4 1/4) ;
+~ Give       ~ me       ~ your       ~ an-                 ~ swer,
 
-Measure: 3.
-Voice: square.
-Cn_5: 3/3.
-Voice: square.
-En_3: 1/3. Gn_3: 1/3. Gn_3: 1/3.
-Voice: square.
-En_3: 1/3. Cn_4: 1/3. Cn_4: 1/3.
+% sine
+| (En_3 1/4) (Fs_3 1/4) (Gn_3 1/4) | (En_3 1/2) ---------- (Gn_3 1/4) ;
 
-Measure: 3.
-Voice: square.
-An_5: 1/3. Bn_5: 1/3. Cn_6: 1/3.
-Voice: square.
-An_4: 1/3. Bn_4: 1/3. Cn_5: 1/3.
-Voice: square.
-An_4: 1/3. Bn_4: 1/3. En_5: 1/3.
+% sawtooth
+| (Cn_1 1/4) (Rest 1/2) ---------- | (Cn_1 1/4) (Rest 1/2) ---------- ;
+| (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) | (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
+| (Rest 1/4) (En_3 1/4) (En_3 1/4) | (Rest 1/4) (En_3 1/4) (En_3 1/4) ;
 
-Measure: 3.
-Voice: square.
-Dn_5: 2/3. En_5: 1/3.
-Voice: square.
-An_5: 2/3. Bn_5: 1/3.
-Voice: square.
-Dn_5: 2/3. En_5: 1/3.
+***********************************************************************
 
-Measure: 3.
-Voice: square.
-Dn_5: 3/3.
-Voice: square.
-Dn_3: 3/3.
-Voice: square.
-An_5: 1/3. Dn_6: 1/3. An_5: 1/3.
-Voice: square.
-An_5: 1/3. Dn_6: 1/3. An_5: 1/3.
+% square
+| (Dn_4 1/2)+ -------------------- | (Dn_4 1/2) ---------- (Rest 1/4) ;
+~ do!
 
-Measure: 3.
-Voice: square.
-Dn_5: 2/3. En_5: 1/3.
-Voice: square.
-Dn_4: 2/3.
-Voice: square.
-An_5: 2/3.
+% sine
+| (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) | (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
+| (Dn_3 1/2)+ -------------------- | (Dn_3 1/2)+ -------------------- ;
 
-Measure: 3.
-Voice: square.
-Fn_5: 1/3. En_5: 1/3. Dn_5: 1/3.
+% sawtooth
+| (Gn_1 1/4) (Dn_2 1/4) (Bn_1 1/4) | (Gn_1 1/4) (Rest 1/2) ---------- ;
 
-Measure: 3.
-Voice: square.
-Gn_5: 2/3. En_5: 1/3.
-Voice: square.
-Cn_5: 2/3.
-Voice: square.
-En_5: 2/3.
-Voice: square.
-Gn_6: 2/3.
+***********************************************************************
 
-Measure: 3.
-Voice: square.
-Dn_5: 1/3. Cn_5: 2/3.
-Voice: square.
-En_4: 3/3.
-Voice: square.
-Gn_4: 3/3.
+% square
+| (An_4 1/2)+ -------------------- | (Dn_5 1/2)+ -------------------- ;
+~ I'm                              ~ half
 
-Measure: 3.
-Voice: square.
-Cn_5: 2/3. Dn_5: 1/3.
-Voice: square.
-En_4: 2/3.
-Voice: square.
-Gn_4: 2/3.
+% sine
+| (An_3 1/2)+ -------------------- | (Dn_4 1/2)+ -------------------- ;
 
-Measure: 3.
-Voice: square.
-En_5: 2/3. Cn_5: 1/3.
-Voice: square.
-Gs_4: 2/3.
-Voice: square.
-Bn_4: 2/3.
+% sawtooth
+| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) ;
+| (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
+| (Rest 1/4) (An_3 1/4) (An_3 1/4) | (Rest 1/4) (Fs_3 1/4) (Fs_3 1/4) ;
+| (Fs_3 1/4) (Rest 1/2) ---------- | (Dn_3 1/4) (Rest 1/2) ---------- ;
 
-Measure: 3.
-Voice: square.
-An_4: 2/3. Cn_5: 1/3.
-Voice: square.
-Cn_4: 2/3.
-Voice: square.
-En_4: 2/3.
+***********************************************************************
 
-Measure: 3.
-Voice: square.
-An_4: 1/3. Gn_3: 2/3.
-Voice: square.
-Cn_4: 3/3.
-Voice: square.
-En_4: 3/3.
-Voice: square.
-An_4: 1/3. Gn_4: 2/3.
+% square
+| (Bn_4 1/2)+ -------------------- | (Gn_4 1/2)+ -------------------- ;
+~ cra-                             ~ zy
 
-Measure: 3.
-Voice: square.
-Gn_4: 2/3. Gn_4: 1/3.
-Voice: square.
-Cn_4: 2/3.
-Voice: square.
-En_4: 2/3.
-Voice: square.
-Gn_4: 2/3.
+% sine
+| (Rest 1/4) (Gn_4 1/4) (Gn_3 1/4) | (Rest 1/4) (Gn_4 1/4) (Gn_4 1/4) ;
+| (Rest 1/4) (Dn_4 1/4) (Dn_3 1/4) | (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) ;
+| (Bn_3 1/2)+ -------------------- | (Gn_3 1/2)+ -------------------- ;
 
-Measure: 3.
-Voice: square.
-Cn_5: 2/3. En_5: 1/3.
-Voice: square.
-Cn_3: 1/3. En_3: 1/3. En_3: 1/3.
-Voice: square.
-Cn_3: 1/3. Gn_3: 1/3. Gn_3: 1/3.
+% sawtooth
+| (Gn_2 1/2)+ -------------------- | (En_2 1/2)+ -------------------- ;
 
-Measure: 3.
-Voice: square.
-Dn_5: 3/3.
-Voice: square.
-Gn_2: 1/3. Dn_3: 1/3. Dn_3: 1/3.
-Voice: square.
-Gn_2: 1/3. Gn_3: 1/3. Gn_3: 1/3.
+***********************************************************************
 
-Measure: 3.
-Voice: square.
-Cn_5: 2/3. En_5: 1/3.
-Voice: square.
-Cn_3: 1/3. En_3: 1/3. En_3: 1/3.
-Voice: square.
-Cn_3: 1/3. Gn_3: 1/3. Gn_3: 1/3.
+% square
+| (En_4 1/4) (Fs_4 1/4) (Gn_4 1/4) | (An_4 1/2) ---------- (Bn_4 1/4) ;
+~ All        ~ for      ~ the        ~ love                ~ of
 
-Measure: 3.
-Voice: square.
-Dn_5: 2/3. En_5: 1/6. Fn_5: 1/6.
-Voice: square.
-Dn_3: 2/3. En_3: 1/6. Fn_3: 1/6.
-Voice: square.
-Gn_3: 2/3. Gn_3: 1/6. An_3: 1/6.
+% sine
+| (En_3 1/4) (Fs_3 1/4) (Gn_3 1/4) | (An_3 1/2) ---------- (Bn_3 1/4) ;
 
-Measure: 3.
-Voice: square.
-Gn_5: 1/3. En_5: 1/3. Cn_5: 1/3.
-Voice: square.
-Cn_3: 1/3. En_3: 1/3. En_3: 1/3.
-Voice: square.
-Cn_3: 1/3. Gn_3: 1/3. Gn_3: 1/3.
+% sawtooth
+| (Rest 1/4) (Cs_4 1/4) (Cs_4 1/4) | (Rest 1/4) (Cs_4 1/4) (Cs_4 1/4) ;
+| (Rest 1/4) (An_3 1/4) (An_3 1/4) | (Rest 1/4) (An_3 1/4) (An_3 1/4) ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
+| (An_3 1/4) (Rest 1/2) ---------- | (An_3 1/4) (Rest 1/2) ---------- ;
 
-Measure: 3.
-Voice: square.
-Dn_5: 2/3. Gn_5: 1/3.
-Voice: square.
-Dn_4: 2/3. Gn_4: 1/3.
+***********************************************************************
 
-Measure: 3.
-Voice: square.
-Cn_5: 3/3.
-Voice: square.
-Cn_4: 1/2. Cn_4: 1/6. Cn_4: 1/4.
-Voice: square.
-En_4: 1/2. En_4: 1/6. En_4: 1/4.
-Voice: square.
-Gn_4: 1/2. Gn_4: 1/6. Gn_4: 1/4.
+% square
+| (An_4 1/2)+ -------------------- | (An_4 1/4) (Rest 1/4) (Bn_4 1/4) ;
+~ you!                                                     ~ It
 
-Measure: 3.
-Voice: square.
-Cn_5: 3/3.
-Voice: square.
-Cn_3: 3/3.
-Voice: square.
-En_3: 3/3.
-Voice: square.
-Gn_3: 3/3.
+% sine
+| (An_3 1/2)+ -------------------- | (An_3 1/4) (Rest 1/2) ----------  ;
+
+% sawtooth
+| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) ;
+| (Rest 1/4) (An_3 1/4) (An_3 1/4) | (Rest 1/4) (An_3 1/4) (An_3 1/4) ;
+| (Rest 1/4) (Fs_3 1/4) (Fs_3 1/4) | (Rest 1/4) (Fs_3 1/4) (Fs_3 1/4) ;
+| (Dn_3 1/4) (Rest 1/2) ---------- | (Dn_3 1/4) (Rest 1/2) ---------- ;
+
+***********************************************************************
+
+% square
+| (Cn_5 1/4) (Bn_4 1/4) (An_4 1/4) | (Dn_5 1/2) ---------- (Bn_4 1/4) ;
+~ won't      ~ be       ~ a          ~ sty-                ~ lish
+
+% sine
+| (Cn_4 1/4) (Bn_3 1/4) (An_3 1/4) | (Dn_4 1/2) ---------- (Bn_3 1/4) ;
+
+% sawtooth
+| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) ;
+| (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
+| (Rest 1/4) (An_3 1/4) (An_3 1/4) | (Rest 1/4) (Fs_3 1/4) (Fs_3 1/4) ;
+| (Fs_3 1/4) (Rest 1/2) ---------- | (Dn_3 1/4) (Rest 1/2) ---------- ;
+
+***********************************************************************
+
+% square
+| (An_4 1/4) (Gn_4 1/2) ---------- | (Gn_4 1/2) ---------- (An_4 1/4) ;
+~ mar-       ~ riage,                ~ O                   ~ I
+
+% sine
+| (An_3 1/4) (Gn_3 1/2) ---------- | (Gn_3 1/2) ---------- (An_3 1/4) ;
+
+% sawtooth
+| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) ;
+| (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) | (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) ;
+| (Gn_3 1/4) (Rest 1/2) ---------- | (Gn_2 1/4) (Rest 1/2) ---------- ;
+
+***********************************************************************
+
+% square
+| (Bn_4 1/2) ---------- (Gn_4 1/4) | (En_4 1/2) ---------- (Gn_4 1/4) ;
+~ can't                 ~ af-        ~ fford               ~ a
+
+% sine
+| (Bn_3 1/2) ---------- (Gn_3 1/4) | (En_3 1/2) ---------- (Gn_3 1/4) ;
+
+% sawtooth
+| (Rest 1/4) (En_4 1/4) (En_4 1/4) | (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) ;
+| (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (En_3 1/4) (En_3 1/4) ;
+| (En_2 1/4) (Rest 1/2) ---------- | (Cn_2 1/4) (Rest 1/2) ---------- ;
+
+***********************************************************************
+
+% square
+| (En_4 1/4) (Dn_4 1/2) ---------- | (Dn_4 1/4) (Rest 1/4) (Dn_4 1/4) ;
+~ car-       ~ riage,                                      ~ but
+
+% sine
+| (En_3 1/4) (Dn_3 1/2) ---------- | (Dn_3 1/4) (Rest 1/4) (Dn_3 1/4) ;
+
+% sawtooth
+| (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) | (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (An_3 1/4) (An_3 1/4) ;
+| (Rest 1/4) (Dn_3 1/4) (Dn_3 1/4) | (Rest 1/4) (Dn_3 1/4) (Dn_3 1/4) ;
+| (Gn_1 1/4) (Rest 1/2) ---------- | (Fs_1 1/4) (Rest 1/2) ---------- ;
+
+***********************************************************************
+
+% square
+| (Gn_4 1/2) ---------- (Bn_4 1/4) | (An_4 1/4) (Rest 1/4) (An_4 1/4) ;
+~ you'll-               ~ look       ~ sweet,              ~ up-
+
+% sine
+| (Gn_3 1/2) ---------- (Bn_3 1/4) | (An_3 1/4) (Rest 1/4) (An_3 1/4) ;
+
+% sawtooth
+| (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) | (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (An_3 1/4) (An_3 1/4) ;
+| (Rest 1/4) (Dn_3 1/4) (Dn_3 1/4) | (Rest 1/4) (Dn_3 1/4) (Dn_3 1/4) ;
+| (Gn_2 1/4) (Rest 1/2) ---------- | (Fs_2 1/4) (Rest 1/2) ---------- ;
+
+**********************************************************************************
+
+% square
+| (Gn_4 1/2) ---------- (Bn_4 1/4) | (An_4 1/4) (Rest 1/4) (Bn_4 1/8) (Cn_5 1/8) ;
+~ on                    ~ the        ~ seat                ~ of       ~ a
+
+% sine
+| (Gn_3 1/2) ---------- (Bn_3 1/4) | (An_3 1/4) (Rest 1/4) (Bn_3 1/8) (Cn_4 1/8) ;
+
+% sawtooth
+| (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) | -- (Rest 1/4) - (Cn_4 1/4) - (Cn_4 1/4) --- ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | -- (Rest 1/4) - (An_3 1/4) - (An_3 1/4) --- ;
+| (Rest 1/4) (Dn_3 1/4) (Dn_3 1/4) | -- (Rest 1/4) - (Dn_3 1/4) - (Dn_3 1/4) --- ;
+| (Gn_2 1/4) (Rest 1/2) ---------- | -- (Fs_2 1/4) - (Rest 1/2) ---------------- ;
+
+**********************************************************************************
+
+% square
+| (Dn_5 1/4) (Bn_4 1/4) (Gn_4 1/4) | (An_4 1/2) ---------- (Dn_4 1/4) ;
+~ by-        ~ cy-      ~ cle        ~ built               ~ for
+
+% sine
+| (Dn_4 1/4) (Bn_3 1/4) (Gn_3 1/4) | (An_3 1/2) ---------- (Dn_3 1/4) ;
+
+% sawtooth
+| (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) | (Rest 1/4) (Cn_4 1/4) (Cn_4 1/4) ;
+| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
+| (Rest 1/4) (Dn_3 1/4) (Dn_3 1/4) | (Rest 1/4) (Dn_3 1/4) (Dn_3 1/4) ;
+| (Gn_2 1/4) (Rest 1/2) ---------- | (Dn_2 1/4) (Rest 1/2) ---------- ;
+
+**********************************************************************************
+
+% square
+| (Gn_4 1/2)+ -------------------- | (Gn_4 1/2)+ ;
+~ two!
+
+% sine
+| (Gn_5 1/2)+ -------------------- | (Gn_5 1/2)+ ;
+| (Gn_3 1/2)+ -------------------- | (Gn_3 1/2)+ ;
+
+% sawtooth
+| (Gn_2 1/4) (Dn_2 1/4) (Bn_1 1/4) | (Gn_1 1/2)+ ;
