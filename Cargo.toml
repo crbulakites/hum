@@ -37,3 +37,4 @@ portaudio = "0.7.0"
 
 [build-dependencies]
 peg = "0.5"
+vcpkg = "0.2"
