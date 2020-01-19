@@ -34,14 +34,14 @@ fn main() {
     let input = matches.value_of("INPUT").unwrap();
     let output = matches.value_of("OUTPUT").unwrap_or("");
 
-    if output == "" {
-        match hum::play(input) {
-            Ok(_) => {},
-            e => {
-                eprintln!("Audio stream failed with the following: {:?}", e);
-            }
-        };
-    } else {
-        hum::convert_to_wav(input, output);
-    }
+    // if output == "" {
+    //     match hum::play(input) {
+    //         Ok(_) => {},
+    //         e => {
+    //             eprintln!("Audio stream failed with the following: {:?}", e);
+    //         }
+    //     };
+    // } else {
+    //     hum::convert_to_wav(input, output);
+    // }
 }

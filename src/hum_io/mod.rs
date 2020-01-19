@@ -19,6 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 extern crate hound;
 extern crate portaudio as pa;
 
+pub mod parse;
+
 use std::fs::File;
 use std::i16;
 use std::io::prelude::*;
