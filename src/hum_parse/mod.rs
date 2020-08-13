@@ -40,12 +40,12 @@ peg::parser!{pub grammar hum_grammar() for str {
         }
 
     rule tempo() -> (String, String)
-        = ws()* "[" ws()* text:$(['0'..='9']+) "_bpm" ws()* "]" ws()* {
+        = ws()* "[" ws()* text:$(number()) "_bpm" ws()* "]" ws()* {
             ("tempo".to_string(), text.to_string())
         }
 
     rule time() -> (String, String)
-        = ws()* "[" ws()* text:$(['0'..='9' | '/']*) ws()* "]" ws()* {
+        = ws()* "[" ws()* text:$(fraction()) ws()* "]" ws()* {
             ("time".to_string(), text.to_string())
         }
 
@@ -56,7 +56,7 @@ peg::parser!{pub grammar hum_grammar() for str {
         }
 
     rule voice() -> (String, String)
-        = ws()* "%" ws()* text:$(['a'..='z' | 'A'..='Z' | '0'..='9' | '_']+) ws()* {
+        = ws()* "%" ws()* text:$(name()) ws()* {
             ("voice".to_string(), text.to_string())
         }
 
@@ -73,9 +73,20 @@ peg::parser!{pub grammar hum_grammar() for str {
         }
 
     rule note() -> (String, String)
-        = ws()* "(" ws()* name:$(['a'..='z' | 'A'..='Z' | '0'..='9' | '_']+) ws()+ length:$(['0'..='9' | '/']*) ws()* ")" dots:$("+"*) ws()* {
-            (name.to_string(), format!("{}{}", length, dots).to_string())
+        = ws()*
+        "(" ws()* note_name:$(name()) ws()+ length:$(fraction()) ws()* ")"
+        dots:$("+"*) ws()* {
+            (note_name.to_string(), format!("{}{}", length, dots).to_string())
         }
+
+    rule name()
+        = ['a'..='z' | 'A'..='Z' | '0'..='9' | '_']+
+
+    rule fraction()
+        = ['0'..='9' | '/']+
+
+    rule number()
+        = ['0'..='9']+
 
     rule ws()
         = " "
