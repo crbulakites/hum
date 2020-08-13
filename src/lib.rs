@@ -19,15 +19,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 extern crate portaudio as pa;
 
 mod hum_io;
+mod hum_parse;
 mod hum_process;
-
-mod hum_parse {
-    include!(concat!(env!("OUT_DIR"), "/hum_parse.rs"));
-}
 
 pub fn play(filename: &str) -> Result<(), pa::Error> {
     let score_contents = hum_io::read(filename);
-    let score_commands = hum_parse::score(&score_contents[..]);
+    let score_commands = hum_parse::hum_grammar::score(&score_contents[..]);
     match score_commands {
         Ok(value) => {
             let waveform = hum_process::run_commands(value);
@@ -43,7 +40,7 @@ pub fn play(filename: &str) -> Result<(), pa::Error> {
 
 pub fn convert_to_wav(filename: &str, outfname: &str) {
     let score_contents = hum_io::read(filename);
-    let score_commands = hum_parse::score(&score_contents[..]);
+    let score_commands = hum_parse::hum_grammar::score(&score_contents[..]);
     match score_commands {
         Ok(value) => {
             let waveform = hum_process::run_commands(value);
