@@ -30,34 +30,39 @@ pub const ABOUT: &str = "Hum is a music notation language and synthesizer.";
 
 
 pub fn play(filename: &str) -> Result<(), pa::Error> {
+    // Read the specified score file and parse it using the included grammar.
     let score_contents = hum_io::read(filename);
-    let score_commands = hum_parse::hum_grammar::score(&score_contents[..]);
-    match score_commands {
-        Ok(value) => {
-            let waveform = hum_process::run_commands(value);
+    let parse_result = hum_parse::hum_grammar::score(&score_contents[..]);
+
+    match parse_result {
+        Ok(score_commands) => {
+            // Convert the list of score commands to a waveform and play it.
+            let waveform = hum_process::run_commands(score_commands);
             hum_io::play(waveform)
         }
         Err(error) => {
+            // In case of a parsing error, print it and then return Ok.
             eprintln!("Error parsing grammar: {}", error);
-            let waveform = vec![0_f32];
-            hum_io::play(waveform)
+            Ok(())
         }
     }
 }
 
 
 pub fn convert_to_wav(filename: &str, outfname: &str) {
+    // Read the specified score file and parse it using the included grammar.
     let score_contents = hum_io::read(filename);
-    let score_commands = hum_parse::hum_grammar::score(&score_contents[..]);
-    match score_commands {
-        Ok(value) => {
-            let waveform = hum_process::run_commands(value);
+    let parse_result = hum_parse::hum_grammar::score(&score_contents[..]);
+
+    match parse_result {
+        Ok(score_commands) => {
+            // Convert the list of score commands to a waveform and save it.
+            let waveform = hum_process::run_commands(score_commands);
             hum_io::save(waveform, outfname);
         }
         Err(error) => {
+            // In case of a parsing error, print it and then return nothing.
             eprintln!("Error parsing grammar: {}", error);
-            let waveform = vec![0_f32];
-            hum_io::save(waveform, outfname);
         }
     }
 }
