@@ -16,11 +16,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+
 extern crate portaudio as pa;
 
 mod hum_io;
 mod hum_parse;
 mod hum_process;
+
+
+pub const VERSION: &str = "0.5.0";
+pub const AUTHOR: &str = "Connor Bulakites <connor@bulakites.net>";
+pub const ABOUT: &str = "Hum is a music notation language and synthesizer.";
+
 
 pub fn play(filename: &str) -> Result<(), pa::Error> {
     let score_contents = hum_io::read(filename);
@@ -38,6 +45,7 @@ pub fn play(filename: &str) -> Result<(), pa::Error> {
     }
 }
 
+
 pub fn convert_to_wav(filename: &str, outfname: &str) {
     let score_contents = hum_io::read(filename);
     let score_commands = hum_parse::hum_grammar::score(&score_contents[..]);
@@ -53,3 +61,4 @@ pub fn convert_to_wav(filename: &str, outfname: &str) {
         }
     }
 }
+

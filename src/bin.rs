@@ -16,16 +16,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+
 #[macro_use]
 
 extern crate clap;
 extern crate hum;
 
+
 fn main() {
     let matches = clap::clap_app!(hum_app =>
-        (version: "0.3.0")
-        (author: "Connor Bulakites <connor@bulakites.net>")
-        (about: "A music notation language and synthesizer written in Rust.")
+        (version: hum::VERSION)
+        (author: hum::AUTHOR)
+        (about: hum::ABOUT)
         (@arg INPUT: +required "Sets the path of the hum notation file.")
         (@arg OUTPUT: -o --output +takes_value "Optionally sets the path of an output WAV file.")
     )
@@ -45,3 +47,4 @@ fn main() {
         hum::convert_to_wav(input, output);
     }
 }
+
