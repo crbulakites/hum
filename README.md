@@ -11,7 +11,7 @@ _DISCLAIMER: This program produces sound output in the form of \*.wav files, and
 <a name="requirements"></a>
 Requirements
 ------------
-To stream audio, Hum depends on _PortAudio_, which you can download [here](http://www.portaudio.com/download.html). If you use Homebrew, you can use the commands `brew install portaudio` and `brew install pkg-config`, respectively.
+To stream audio, Hum depends on _PortAudio_, which you can download [here](http://files.portaudio.com/download.html).
 
 Building the Project
 --------------------
