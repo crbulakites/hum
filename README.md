@@ -11,7 +11,8 @@ _DISCLAIMER: This program produces sound output in the form of \*.wav files, and
 <a name="requirements"></a>
 Requirements
 ------------
-To stream audio, Hum depends on _PortAudio_, which you can download [here](http://files.portaudio.com/download.html).
+- Rust: https://www.rust-lang.org/en-US/install.html
+- PortAudio: http://files.portaudio.com/download.html
 
 Building the Project
 --------------------
@@ -40,11 +41,7 @@ To convert the included \*.hum file, "daisy.hum," to a file called "daisy.wav," 
 
 Installing the Latest Release
 -----------------------------
-To install the latest release as a CLI tool, first make sure that you have fulfilled the requirements by [_installing PortAudio_](#requirements).
-
-Second, make sure that you have Cargo installed so that you can download the binary from crates.io:
-
-https://www.rust-lang.org/en-US/install.html
+To install the latest release as a CLI tool, first make sure that you have fulfilled the requirements by [_installing Rust and PortAudio_](#requirements).
 
 Then you can run the following command in the terminal:
 
