@@ -31,10 +31,10 @@ path = "src/bin.rs"
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-clap = "2.32.0"
+clap = "2.33.3"
 hound = "3.4.0"
-peg = "0.6"
+peg = "0.6.3"
 portaudio = "0.7.0"
 
 [build-dependencies]
-vcpkg = "0.2"
+vcpkg = "0.2.11"
