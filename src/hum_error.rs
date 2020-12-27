@@ -24,30 +24,48 @@ use std::error;
 use std::fmt;
 
 
+#[derive(Debug)]
+pub struct GenerateError {
+    pub message: String,
+}
+
+impl fmt::Display for GenerateError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.message)
+    }
+}
+
+impl error::Error for GenerateError {}
+
+
 pub type ParseError = peg::error::ParseError<peg::str::LineCol>;
-    
+
 
 #[derive(Debug)]
 pub enum HumError {
     FileSaveError(hound::Error),
     PlaybackError(portaudio::Error),
+    GenerateError(GenerateError),
     HumParseError(ParseError),
 }
  
-
 impl From<hound::Error> for HumError {
     fn from(err: hound::Error) -> HumError {
         HumError::FileSaveError(err)
     }
 }
  
-
 impl From<portaudio::Error> for HumError {
     fn from(err: portaudio::Error) -> HumError {
         HumError::PlaybackError(err)
     }
 }
  
+impl From<GenerateError> for HumError {
+    fn from(err: GenerateError) -> HumError {
+        HumError::GenerateError(err)
+    }
+}
 
 impl From<ParseError> for HumError {
     fn from(err: ParseError) -> HumError {
@@ -55,23 +73,23 @@ impl From<ParseError> for HumError {
     }
 }
 
-
 impl fmt::Display for HumError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             HumError::FileSaveError(ref err) => write!(f, "FileSaveError: {}", err),
             HumError::PlaybackError(ref err) => write!(f, "PlaybackError: {}", err),
+            HumError::GenerateError(ref err) => write!(f, "GenerateError: {}", err),
             HumError::HumParseError(ref err) => write!(f, "HumParseError: {}", err),
         }
     }
 }
-
 
 impl error::Error for HumError {
     fn cause(&self) -> Option<&dyn error::Error> {
         match *self {
             HumError::FileSaveError(ref err) => Some(err),
             HumError::PlaybackError(ref err) => Some(err),
+            HumError::GenerateError(ref err) => Some(err),
             HumError::HumParseError(ref err) => Some(err),
         }
     }

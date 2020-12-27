@@ -28,13 +28,13 @@ pub const AUTHOR: &str = "Connor Bulakites <connor@bulakites.net>";
 pub const ABOUT: &str = "Hum is a music notation language and synthesizer.";
 
 
-fn parse_score_contents(filename: &str) -> Result<Vec<f32>, hum_error::ParseError> {
+fn parse_score_contents(filename: &str) -> Result<Vec<f32>, hum_error::HumError> {
     // Read the specified score file and parse it using the included grammar.
     let score_contents = hum_io::read(filename);
     let score_commands = hum_parse::hum_grammar::score(&score_contents[..])?;
 
     // Use the commands in the score file to generate the waveform.
-    Ok(hum_process::run_commands(score_commands))
+    Ok(hum_process::run_commands(score_commands)?)
 }
 
 

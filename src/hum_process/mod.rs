@@ -19,10 +19,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 mod hum_math;
 mod hum_voice;
 
+use super::hum_error::GenerateError;
+
+
 // The number of samples of the waveform per seconds of audio:
 static SAMPLE_RATE: u32 = 44_100;
 
-pub fn run_commands(score_commands: Vec<(String, String)>) -> Vec<f32> {
+
+pub fn run_commands(score_commands: Vec<(String, String)>) -> Result<Vec<f32>, GenerateError> {
     // The following variables may or will change as we iterate through the *.hum file:
     // -------------------------------------------------------------------------------------------
     // The current number of beats per second (defaults to 1.0 for a tempo of 60.0):
@@ -164,15 +168,16 @@ pub fn run_commands(score_commands: Vec<(String, String)>) -> Vec<f32> {
                     }
                     // If the note isn't recognized:
                     None => {
-                        println!("ERROR: there is no note named {}.", verb);
+                        return Err(GenerateError{message: format!("There is no note named {}", verb)});
                     }
                 }
             }
         }
     }
 
-    track
+    Ok(track)
 }
+
 
 fn add_note_to_track(
     position: f32,        // Start position of the note in the track in seconds
