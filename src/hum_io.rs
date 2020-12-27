@@ -78,7 +78,7 @@ pub fn play(waveform: Vec<f32>) -> Result<(), pa::Error> {
 }
 
 
-pub fn save(waveform: Vec<f32>, filename: &str) {
+pub fn save(waveform: Vec<f32>, filename: &str) -> Result<(), hound::Error> {
     let spec = hound::WavSpec {
         channels: NUM_CHANNELS,
         sample_rate: SAMPLE_RATE,
@@ -86,12 +86,12 @@ pub fn save(waveform: Vec<f32>, filename: &str) {
         sample_format: hound::SampleFormat::Int,
     };
 
-    let mut writer = hound::WavWriter::create(filename, spec).unwrap();
+    let mut writer = hound::WavWriter::create(filename, spec)?;
 
     for sample in waveform {
         let amplitude = i16::MAX as f32;
-        writer.write_sample((sample * amplitude) as i16).unwrap();
+        writer.write_sample((sample * amplitude) as i16)?;
     }
 
-    writer.finalize().unwrap();
+    Ok(writer.finalize()?)
 }

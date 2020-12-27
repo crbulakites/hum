@@ -48,6 +48,6 @@ pub fn play(filename: &str) -> Result<(), hum_error::HumError> {
 pub fn convert_to_wav(filename: &str, outfname: &str) -> Result<(), hum_error::HumError> {
     // Generate the waveform and save it to a WAV file.
     let waveform = parse_score_contents(filename)?;
-    Ok(hum_io::save(waveform, outfname))
+    Ok(hum_io::save(waveform, outfname)?)
 }
 
