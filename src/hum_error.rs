@@ -24,6 +24,7 @@ use std::error;
 use std::fmt;
 
 
+// Custom type for general Hum processing errors
 #[derive(Debug)]
 pub struct GenerateError {
     pub message: String,
@@ -38,9 +39,11 @@ impl fmt::Display for GenerateError {
 impl error::Error for GenerateError {}
 
 
+// Declaration of Peg ParseError (type specification required)
 pub type ParseError = peg::error::ParseError<peg::str::LineCol>;
 
 
+// Custom type for catch-all Hum errors.
 #[derive(Debug)]
 pub enum HumError {
     FileSaveError(hound::Error),
