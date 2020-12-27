@@ -1,4 +1,4 @@
-Hum Synthesizer 0.4.0 👄
+Hum Synthesizer 0.5.0 👄
 ========================
 A music notation language and synthesizer written in Rust.
 
@@ -13,6 +13,8 @@ Requirements
 ------------
 - Rust: https://www.rust-lang.org/en-US/install.html
 - PortAudio: http://files.portaudio.com/download.html
+
+I (Connor) have only tested Hum on Ubuntu and MacOS. Please see [this pull request by Phyllostachys](https://github.com/crbulakites/hum/pull/2) for discussion related to building on Windows.
 
 Building the Project
 --------------------

@@ -1,0 +1,5 @@
+vcpkg-rs v0.2.11 is an external dependency linked via crates.io which allows us
+to use to PortAudio on Windows. It is licensed under the MIT/Apache-2.0 License.
+
+vcpkg-rs author: Jim McGrath
+vcpkg-rs source: https://github.com/mcgoo/vcpkg-rs
