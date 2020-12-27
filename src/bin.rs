@@ -30,8 +30,7 @@ fn main() {
         (about: hum::ABOUT)
         (@arg INPUT: +required "Sets the path of the hum notation file.")
         (@arg OUTPUT: -o --output +takes_value "Optionally sets the path of an output WAV file.")
-    )
-    .get_matches();
+    ).get_matches();
 
     let input = matches.value_of("INPUT").unwrap();
     let output = matches.value_of("OUTPUT").unwrap_or("");
@@ -39,12 +38,13 @@ fn main() {
     if output == "" {
         match hum::play(input) {
             Ok(_) => {},
-            e => {
-                eprintln!("Audio stream failed with the following: {:?}", e);
-            }
-        };
+            Err(message) => eprintln!("{}", message),
+        }
     } else {
-        hum::convert_to_wav(input, output);
+        match hum::convert_to_wav(input, output) {
+            Ok(_) => {},
+            Err(message) => eprintln!("{}", message),
+        }
     }
 }
 

@@ -16,54 +16,38 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-
-extern crate portaudio as pa;
-
+mod hum_error;
 mod hum_io;
 mod hum_parse;
 mod hum_process;
 
 
+// Some information about the library.
 pub const VERSION: &str = "0.5.0";
 pub const AUTHOR: &str = "Connor Bulakites <connor@bulakites.net>";
 pub const ABOUT: &str = "Hum is a music notation language and synthesizer.";
 
 
-pub fn play(filename: &str) -> Result<(), pa::Error> {
+fn parse_score_contents(filename: &str) -> Result<Vec<f32>, hum_error::ParseError> {
     // Read the specified score file and parse it using the included grammar.
     let score_contents = hum_io::read(filename);
-    let parse_result = hum_parse::hum_grammar::score(&score_contents[..]);
+    let score_commands = hum_parse::hum_grammar::score(&score_contents[..])?;
 
-    match parse_result {
-        Ok(score_commands) => {
-            // Convert the list of score commands to a waveform and play it.
-            let waveform = hum_process::run_commands(score_commands);
-            hum_io::play(waveform)
-        }
-        Err(error) => {
-            // In case of a parsing error, print it and then return Ok.
-            eprintln!("Error parsing grammar: {}", error);
-            Ok(())
-        }
-    }
+    // Use the commands in the score file to generate the waveform.
+    Ok(hum_process::run_commands(score_commands))
 }
 
 
-pub fn convert_to_wav(filename: &str, outfname: &str) {
-    // Read the specified score file and parse it using the included grammar.
-    let score_contents = hum_io::read(filename);
-    let parse_result = hum_parse::hum_grammar::score(&score_contents[..]);
+pub fn play(filename: &str) -> Result<(), hum_error::HumError> {
+    // Generate the waveform and stream it to the speakers.
+    let waveform = parse_score_contents(filename)?;
+    Ok(hum_io::play(waveform)?)
+}
 
-    match parse_result {
-        Ok(score_commands) => {
-            // Convert the list of score commands to a waveform and save it.
-            let waveform = hum_process::run_commands(score_commands);
-            hum_io::save(waveform, outfname);
-        }
-        Err(error) => {
-            // In case of a parsing error, print it and then return nothing.
-            eprintln!("Error parsing grammar: {}", error);
-        }
-    }
+
+pub fn convert_to_wav(filename: &str, outfname: &str) -> Result<(), hum_error::HumError> {
+    // Generate the waveform and save it to a WAV file.
+    let waveform = parse_score_contents(filename)?;
+    Ok(hum_io::save(waveform, outfname))
 }
 
