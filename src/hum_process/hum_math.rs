@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 use std::collections::HashMap;
 use std::f32::NAN;
 
-pub fn generate_wave(signal: &Fn(f32, &f32) -> f32, frequency: &f32, duration: f32) -> Vec<f32> {
+pub fn generate_wave(signal: &dyn Fn(f32, &f32) -> f32, frequency: &f32, duration: f32) -> Vec<f32> {
     let sample_rate = 44_100_f32; // The number of samples per second
     let num_samples = (sample_rate * duration) as usize;
     // Find all of the time values in the wave and calculate the function of time (signal):
