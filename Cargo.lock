@@ -55,7 +55,7 @@ checksum = "8a164bb2ceaeff4f42542bdb847c41517c78a60f5649671b2a07312b6e117549"
 
 [[package]]
 name = "hum"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "clap",
  "hound",
