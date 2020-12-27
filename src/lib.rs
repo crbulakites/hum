@@ -16,10 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-mod hum_error;
 mod hum_parse;
 mod hum_process;
 
+pub mod hum_error;
 pub mod hum_io;
 
 
