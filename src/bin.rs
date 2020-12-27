@@ -36,14 +36,17 @@ fn main() {
     let input = matches.value_of("INPUT").unwrap();
     let output = matches.value_of("OUTPUT").unwrap_or("");
 
+    // Read the contents of the input file.
+    let score_contents = hum::hum_io::read(input);
+
     // Run the program.
     if output == "" {
-        match hum::play(input) {
+        match hum::play(score_contents) {
             Ok(_) => {},
             Err(message) => eprintln!("{}", message),
         }
     } else {
-        match hum::convert_to_wav(input, output) {
+        match hum::convert_to_wav(score_contents, output) {
             Ok(_) => {},
             Err(message) => eprintln!("{}", message),
         }
