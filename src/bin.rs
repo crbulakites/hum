@@ -24,6 +24,7 @@ extern crate hum;
 
 
 fn main() {
+    // Parse command line arguments.
     let matches = clap::clap_app!(hum_app =>
         (version: hum::VERSION)
         (author: hum::AUTHOR)
@@ -35,6 +36,7 @@ fn main() {
     let input = matches.value_of("INPUT").unwrap();
     let output = matches.value_of("OUTPUT").unwrap_or("");
 
+    // Run the program.
     if output == "" {
         match hum::play(input) {
             Ok(_) => {},

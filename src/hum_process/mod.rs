@@ -222,3 +222,4 @@ fn add_note_to_track(
         track[sample_position + i] += note[i] * volume;
     }
 }
+

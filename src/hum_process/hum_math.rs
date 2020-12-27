@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 use std::collections::HashMap;
 use std::f32::NAN;
 
+
 pub fn generate_wave(signal: &dyn Fn(f32, &f32) -> f32, frequency: &f32, duration: f32) -> Vec<f32> {
     let sample_rate = 44_100_f32; // The number of samples per second
     let num_samples = (sample_rate * duration) as usize;
@@ -38,6 +39,7 @@ pub fn generate_wave(signal: &dyn Fn(f32, &f32) -> f32, frequency: &f32, duratio
         })
         .collect()
 }
+
 
 // Returns eight octaves of the standard 12 note scale tuned to A 440Hz:
 pub fn get_standard_note_frequencies(key: &str) -> HashMap<String, f32> {
@@ -66,6 +68,7 @@ pub fn get_standard_note_frequencies(key: &str) -> HashMap<String, f32> {
         concert_pitch_frequency,
     )
 }
+
 
 // Calculates the frequencies of notes with an arbitrary scale and tuning (concert) pitch:
 fn calculate_note_frequencies(
@@ -114,3 +117,4 @@ fn calculate_note_frequencies(
 
     note_frequencies
 }
+
