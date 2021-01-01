@@ -36,7 +36,8 @@ fn main() {
     let output = matches.value_of("OUTPUT").unwrap_or("");
 
     // Read the contents of the input file.
-    let score_contents = hum::hum_io::read(input);
+    let score_contents = hum::hum_io::read(input)
+        .expect("There was a problem reading the score file.");
 
     // Run the program.
     if output == "" {

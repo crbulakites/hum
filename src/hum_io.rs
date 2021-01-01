@@ -21,7 +21,8 @@ extern crate portaudio as pa;
 
 use std::fs::File;
 use std::i16;
-use std::io::prelude::*;
+use std::io;
+use std::io::Read;
 
 
 static NUM_CHANNELS: u16 = 1;
@@ -30,15 +31,11 @@ static SAMPLE_RATE: u32 = 44_100;
 static FRAMES_PER_BUFFER: u32 = 0; // Let PortAudio decide what the best buffer size is
 
 
-pub fn read(filename: &str) -> String {
-    let mut score_file = File::open(filename).expect("Score file not found.");
+pub fn read(filename: &str) -> Result<String, io::Error> {
+    let mut score_file = File::open(filename)?;
     let mut score_contents = String::new();
-
-    score_file
-        .read_to_string(&mut score_contents)
-        .expect("Something went wrong reading the score file.");
-
-    score_contents
+    score_file.read_to_string(&mut score_contents)?;
+    Ok(score_contents)
 }
 
 
