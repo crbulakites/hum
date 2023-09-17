@@ -16,40 +16,40 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#[macro_use]
-
 extern crate clap;
 extern crate hum;
 
 
 fn main() {
     // Parse command line arguments.
-    let matches = clap::clap_app!(hum_app =>
-        (version: hum::VERSION)
-        (author: hum::AUTHOR)
-        (about: hum::ABOUT)
-        (@arg INPUT: +required "Sets the path of the hum notation file.")
-        (@arg OUTPUT: -o --output +takes_value "Optionally sets the path of an output WAV file.")
-    ).get_matches();
+    let matches = clap::Command::new("hum")
+        .version(hum::VERSION)
+        .author(hum::AUTHOR)
+        .about(hum::ABOUT)
+        .arg(
+            clap::Arg::new("INPUT")
+                .help("Sets the path of the hum notation file.")
+                .required(true)
+                .index(1)
+        )
+        .arg(
+            clap::Arg::new("OUTPUT")
+                .help("Sets the path of the output WAV file.")
+                .required(true)
+                .index(2)
+        )
+        .get_matches();
 
-    let input = matches.value_of("INPUT").unwrap();
-    let output = matches.value_of("OUTPUT").unwrap_or("");
+    let input = matches.get_one::<String>("INPUT").unwrap();
+    let output = matches.get_one::<String>("OUTPUT").unwrap();
 
     // Read the contents of the input file.
     let score_contents = hum::hum_io::read(input)
         .expect("There was a problem reading the score file.");
 
     // Run the program.
-    if output == "" {
-        match hum::play(score_contents) {
-            Ok(_) => {},
-            Err(message) => eprintln!("{}", message),
-        }
-    } else {
-        match hum::convert_to_wav(score_contents, output) {
-            Ok(_) => {},
-            Err(message) => eprintln!("{}", message),
-        }
+    match hum::convert_to_wav(score_contents, output) {
+        Ok(_) => {},
+        Err(message) => eprintln!("{}", message),
     }
 }
-
