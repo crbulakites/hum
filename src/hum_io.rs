@@ -17,7 +17,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 extern crate hound;
-extern crate portaudio as pa;
 
 use std::fs::File;
 use std::i16;
@@ -28,7 +27,6 @@ use std::io::Read;
 static NUM_CHANNELS: u16 = 1;
 static BIT_DEPTH: u16 = 16;
 static SAMPLE_RATE: u32 = 44_100;
-static FRAMES_PER_BUFFER: u32 = 0; // Let PortAudio decide what the best buffer size is
 
 
 pub fn read(filename: &str) -> Result<String, io::Error> {
@@ -36,42 +34,6 @@ pub fn read(filename: &str) -> Result<String, io::Error> {
     let mut score_contents = String::new();
     score_file.read_to_string(&mut score_contents)?;
     Ok(score_contents)
-}
-
-
-pub fn play(waveform: Vec<f32>) -> Result<(), pa::Error> {
-    let pa_instance = pa::PortAudio::new()?;
-
-    let settings = pa_instance.default_output_stream_settings(
-        NUM_CHANNELS as i32,
-        SAMPLE_RATE as f64,
-        FRAMES_PER_BUFFER,
-    )?;
-
-    let table_size = waveform.len();
-    let num_seconds = table_size as f32 / SAMPLE_RATE as f32;
-
-    // This routine will be called by the PortAudio engine when audio is needed. It may called at
-    // interrupt level on some machines, so don't do anything that could mess up the system like
-    // dynamic resource allocation or IO.
-    let mut cursor = 0;
-    let callback = move |pa::OutputStreamCallbackArgs { buffer, frames, .. }| {
-        for i in 0..frames {
-            buffer[i] = waveform[cursor % table_size];
-            cursor += 1;
-        }
-        pa::Continue
-    };
-
-    let mut stream = pa_instance.open_non_blocking_stream(settings, callback)?;
-    stream.start()?;
-
-    pa_instance.sleep((num_seconds * 1_000_f32) as i32);
-
-    stream.stop()?;
-    stream.close()?;
-
-    Ok(())
 }
 
 

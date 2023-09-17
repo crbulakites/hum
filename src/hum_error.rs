@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  
 extern crate hound;
 extern crate peg;
-extern crate portaudio;
 
 use std::error;
 use std::fmt;
@@ -47,7 +46,6 @@ pub type ParseError = peg::error::ParseError<peg::str::LineCol>;
 #[derive(Debug)]
 pub enum HumError {
     FileSaveError(hound::Error),
-    PlaybackError(portaudio::Error),
     GenerateError(GenerateError),
     HumParseError(ParseError),
 }
@@ -55,12 +53,6 @@ pub enum HumError {
 impl From<hound::Error> for HumError {
     fn from(err: hound::Error) -> HumError {
         HumError::FileSaveError(err)
-    }
-}
- 
-impl From<portaudio::Error> for HumError {
-    fn from(err: portaudio::Error) -> HumError {
-        HumError::PlaybackError(err)
     }
 }
  
@@ -80,7 +72,6 @@ impl fmt::Display for HumError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             HumError::FileSaveError(ref err) => write!(f, "FileSaveError: {}", err),
-            HumError::PlaybackError(ref err) => write!(f, "PlaybackError: {}", err),
             HumError::GenerateError(ref err) => write!(f, "GenerateError: {}", err),
             HumError::HumParseError(ref err) => write!(f, "HumParseError: {}", err),
         }
@@ -91,7 +82,6 @@ impl error::Error for HumError {
     fn cause(&self) -> Option<&dyn error::Error> {
         match *self {
             HumError::FileSaveError(ref err) => Some(err),
-            HumError::PlaybackError(ref err) => Some(err),
             HumError::GenerateError(ref err) => Some(err),
             HumError::HumParseError(ref err) => Some(err),
         }

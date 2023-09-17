@@ -36,16 +36,8 @@ fn parse_score_contents(score_contents: String) -> Result<Vec<f32>, hum_error::H
 }
 
 
-pub fn play(score_contents: String) -> Result<(), hum_error::HumError> {
-    // Generate the waveform and stream it to the speakers.
-    let waveform = parse_score_contents(score_contents)?;
-    Ok(hum_io::play(waveform)?)
-}
-
-
 pub fn convert_to_wav(score_contents: String, outfname: &str) -> Result<(), hum_error::HumError> {
     // Generate the waveform and save it to a WAV file.
     let waveform = parse_score_contents(score_contents)?;
     Ok(hum_io::save(waveform, outfname)?)
 }
-

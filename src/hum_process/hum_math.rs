@@ -117,4 +117,3 @@ fn calculate_note_frequencies(
 
     note_frequencies
 }
-

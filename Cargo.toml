@@ -34,7 +34,6 @@ maintenance = { status = "experimental" }
 clap = "4.4.3"
 hound = "3.4.0"
 peg = "0.6.3"
-portaudio = "0.7.0"
 
 [build-dependencies]
 vcpkg = "0.2.11"
