@@ -1,0 +1,6 @@
+Clap v4.4.3 is an external dependency linked via crates.io which is used to
+parse CLI arguments. It is licensed under the Apache License version 2 or
+the MIT License.
+
+Hound source: https://github.com/clap-rs/clap
+

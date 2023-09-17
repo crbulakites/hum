@@ -1,5 +1,0 @@
-Clap v2.33.0 is an external dependency linked via crates.io which is used to
-parse command line arguments. It is licensed under the MIT License.
-
-Clap author: Kevin B. Knapp
-Clap source: https://github.com/clap-rs/clap
