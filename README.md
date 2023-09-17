@@ -2,7 +2,7 @@ Hum Synthesizer 0.5.0 👄
 ========================
 A music notation language and synthesizer written in Rust.
 
-Hum converts markup text files to playable music which can either be streamed directly to your speakers or saved as WAV files.
+Hum converts markup text files to playable music saved as WAV files.
 
 _This project is in early development, and its public API is possibly subject to breaking changes at any time. If I knowingly make a breaking change, I will update the MINOR version in the semantic versioning scheme, where the version numbers are MAJOR.MINOR.PATCH._
 
@@ -12,9 +12,6 @@ _DISCLAIMER: This program produces sound output in the form of \*.wav files, and
 Requirements
 ------------
 - Rust: https://www.rust-lang.org/en-US/install.html
-- PortAudio: http://files.portaudio.com/download.html
-
-I (Connor) have only tested Hum on Ubuntu and MacOS. Please see [this pull request by Phyllostachys](https://github.com/crbulakites/hum/pull/2) for discussion related to building on Windows.
 
 Building the Project
 --------------------
@@ -24,26 +21,17 @@ Testing the Project
 -------------------
 To test the project, use `cargo run` in the root directory.
 
-Hum has only one required command-line argument:
-  1. the path of the \*.hum input file.
-
-If you only provide one argument, Hum will stream the audio to your speakers and not save any output. If you would like to save the audio to a WAV file, then you must provide an additional command-line argument with the `-o` flag.
-
-To save to a WAV file, hum requires two command-line arguments:
-  1. the path of the \*.hum file
-  2. `-o` + the desired path of the \*.wav file
-
-To play the included \*.hum file, "daisy.hum," use the following command in the root directory:
-
-`cargo run daisy.hum`
+Hum has two required, positional command-line argument:
+  1. the path of the \*.hum input file
+  2. the path of the \*.wav output file
 
 To convert the included \*.hum file, "daisy.hum," to a file called "daisy.wav," use the following command in the root directory:
 
-`cargo run daisy.hum -o daisy.wav`
+`cargo run daisy.hum daisy.wav`
 
 Installing the Latest Release
 -----------------------------
-To install the latest release as a CLI tool, first make sure that you have fulfilled the requirements by [_installing Rust and PortAudio_](#requirements).
+To install the latest release as a CLI tool, first make sure that you have fulfilled the requirements by [_installing Rust_](#requirements).
 
 Then you can run the following command in the terminal:
 
@@ -51,18 +39,18 @@ Then you can run the following command in the terminal:
 
 Now you can use hum like any other CLI tool. For example, presuming the file `daisy.hum` exists in the current directory, you could use:
 
-`hum daisy.hum` or `hum daisy.hum -o daisy.wav`
+`hum daisy.hum daisy.wav`
 
 Using Hum as a Library
 ----------------------
-You can also use Hum as a library in your own Rust programs. Right now, there are two methods which implement the functionality of the CLI tool:
+You can also use Hum as a library in your own Rust programs. Right now, there is one method which implements the functionality of the CLI tool:
 
 ```
 extern crate hum;
 ...
-hum::play(input)
 hum::convert_to_wav(input, output);
 ```
+
 An Explanation of the Hum Music Notation Language:
 --------------------------------------------------
 The Hum music notation language is intended to be easily interpreted by human musicians and computers. It is still in early development and subject to change, but here is a brief explanation of the features available so far. I encourage you to look at the included example files and modify them to help you understand how the language works. First off, here is what the language looks like:
