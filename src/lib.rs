@@ -24,7 +24,7 @@ pub mod hum_io;
 
 
 // Some information about the library.
-pub const VERSION: &str = "0.5.0";
+pub const VERSION: &str = "0.6.0";
 pub const AUTHOR: &str = "Connor Bulakites <connor@bulakites.net>";
 pub const ABOUT: &str = "Hum is a music notation language and synthesizer.";
 
