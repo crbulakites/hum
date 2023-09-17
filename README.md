@@ -21,7 +21,7 @@ Testing the Project
 -------------------
 To test the project, use `cargo run` in the root directory.
 
-Hum has two required, positional command-line argument:
+Hum has two required, positional command-line arguments:
   1. the path of the \*.hum input file
   2. the path of the \*.wav output file
 
