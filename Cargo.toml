@@ -36,4 +36,3 @@ hound = "3.4.0"
 peg = "0.6.3"
 
 [build-dependencies]
-vcpkg = "0.2.11"
