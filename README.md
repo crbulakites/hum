@@ -1,4 +1,4 @@
-Hum Synthesizer 0.5.0 👄
+Hum Synthesizer 0.6.0 👄
 ========================
 A music notation language and synthesizer written in Rust.
 
