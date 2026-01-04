@@ -2,6 +2,8 @@ Hum Synthesizer 0.7.0-dev 👄
 ============================
 A music notation language and synthesizer written in Rust.
 
+![Screenshot of the Hum Editor with the help screen open.](./hum-editor-screenshot.png)
+
 Hum converts markup text files to playable music saved as WAV files. It also includes an interactive terminal-based editor for composing music.
 
 _This project is in early development, and its public API is possibly subject to breaking changes at any time. If I knowingly make a breaking change, I will update the MINOR version in the semantic versioning scheme, where the version numbers are MAJOR.MINOR.PATCH._
@@ -11,7 +13,7 @@ _DISCLAIMER: This program produces sound output in the form of \*.wav files, and
 <a name="requirements"></a>
 Requirements
 ------------
-- Rust: https://www.rust-lang.org/en-US/install.html
+- Rust: https://rust-lang.org/tools/install/
 
 Building the Project
 --------------------
