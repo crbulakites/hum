@@ -16,10 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-extern crate peg;
-
-
-peg::parser!{
+peg::parser! {
     pub grammar hum_grammar() for str {
         pub rule score() -> Vec<(String, String)>
             = commands:command()* {
@@ -36,49 +33,49 @@ peg::parser!{
             / reset()
             / note()
 
-        rule comment() -> (String, String)
+        pub rule comment() -> (String, String)
             = ws()* "~" text:$((!['\n'][_])*) eol() {
                 ("comment".to_string(), text.trim().to_string())
             }
 
-        rule tempo() -> (String, String)
+        pub rule tempo() -> (String, String)
             = ws()* "[" ws()* text:$(number()) "_bpm" ws()* "]" ws()* {
                 ("tempo".to_string(), text.to_string())
             }
 
-        rule time() -> (String, String)
+        pub rule time() -> (String, String)
             = ws()* "[" ws()* text:$(fraction()) ws()* "]" ws()* {
                 ("time".to_string(), text.to_string())
             }
 
-        rule checkpoint() -> (String, String)
+        pub rule checkpoint() -> (String, String)
             = ws()* "*"+ ws()* {
                 // The second value doesn't matter for this one :)
                 ("checkpoint".to_string(), "(｡^‿^｡)".to_string())
             }
 
-        rule voice() -> (String, String)
+        pub rule voice() -> (String, String)
             = ws()* "%" ws()* text:$(name()) ws()* {
                 ("voice".to_string(), text.to_string())
             }
 
-        rule measure() -> (String, String)
+        pub rule measure() -> (String, String)
             = ws()* "|" ws()* {
                 // The second value doesn't matter for this one :)
                 ("measure".to_string(), "(｡￣▽￣｡)θ～♪♪".to_string())
             }
 
-        rule reset() -> (String, String)
-            = ws()* ";" ws_not_newline()* (!['\n'][_])* eol() {
-                // The second value doesn't matter for this one :)
-                ("reset".to_string(), "ヽ(｡＾▽＾｡)ノ".to_string())
+        pub rule reset() -> (String, String)
+            = ws()* ";" ws_not_newline()* text:$((!['\n'][_])*) eol() {
+                ("reset".to_string(), text.trim().to_string())
             }
 
-        rule note() -> (String, String)
+        pub rule note() -> (String, String)
             = ws()*
-            "(" ws()* note_name:$(name()) ws()+ length:$(fraction()) ws()* ")"
-            dots:$("+"*) ws()* {
-                (note_name.to_string(), format!("{}{}", length, dots).to_string())
+            "(" ws()* note_name:$(name()) ws()+ length:$(fraction()) dots_inside:$("+"*) ws()* ")"
+            dots_outside:$("+"*) ws()* {
+                let all_dots = format!("{}{}", dots_inside, dots_outside);
+                (note_name.to_string(), format!("{}{}", length, all_dots).to_string())
             }
 
         rule name()
@@ -106,5 +103,75 @@ peg::parser!{
             / "-" // Special whitespace character allowed in hum scores
             / "\t"
             / "\r"
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::hum_grammar;
+
+    #[test]
+    fn test_parse_note() {
+        assert_eq!(
+            hum_grammar::note("(A_4 1/4)"),
+            Ok(("A_4".to_string(), "1/4".to_string()))
+        );
+        assert_eq!(
+            hum_grammar::note("(Cs_4 1/8)+"),
+            Ok(("Cs_4".to_string(), "1/8+".to_string()))
+        );
+        assert_eq!(
+            hum_grammar::note("(Bf_3 1/2)++"),
+            Ok(("Bf_3".to_string(), "1/2++".to_string()))
+        );
+    }
+
+    #[test]
+    fn test_parse_tempo() {
+        assert_eq!(
+            hum_grammar::tempo("[ 120_bpm ]"),
+            Ok(("tempo".to_string(), "120".to_string()))
+        );
+    }
+
+    #[test]
+    fn test_parse_time() {
+        assert_eq!(
+            hum_grammar::time("[ 4/4 ]"),
+            Ok(("time".to_string(), "4/4".to_string()))
+        );
+    }
+
+    #[test]
+    fn test_parse_voice() {
+        assert_eq!(
+            hum_grammar::voice("% piano"),
+            Ok(("voice".to_string(), "piano".to_string()))
+        );
+    }
+
+    #[test]
+    fn test_parse_comment() {
+        assert_eq!(
+            hum_grammar::comment("~ This is a comment\n"),
+            Ok(("comment".to_string(), "This is a comment".to_string()))
+        );
+    }
+
+    #[test]
+    fn test_parse_score() {
+        let input = r#"
+            [ 120_bpm ]
+            [ 4/4 ]
+            % sine
+            |
+            (C_4 1/4) (D_4 1/4) (E_4 1/4) (F_4 1/4)
+            |
+            *
+        "#;
+        let result = hum_grammar::score(input);
+        assert!(result.is_ok());
+        let commands = result.unwrap();
+        assert_eq!(commands.len(), 10); // tempo, time, voice, measure, 4 notes, measure, checkpoint
     }
 }

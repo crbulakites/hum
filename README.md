@@ -1,8 +1,8 @@
-Hum Synthesizer 0.6.0 👄
-========================
+Hum Synthesizer 0.7.0-dev 👄
+============================
 A music notation language and synthesizer written in Rust.
 
-Hum converts markup text files to playable music saved as WAV files.
+Hum converts markup text files to playable music saved as WAV files. It also includes an interactive terminal-based editor for composing music.
 
 _This project is in early development, and its public API is possibly subject to breaking changes at any time. If I knowingly make a breaking change, I will update the MINOR version in the semantic versioning scheme, where the version numbers are MAJOR.MINOR.PATCH._
 
@@ -19,15 +19,23 @@ To build the project, use `cargo build` in the root directory.
 
 Testing the Project
 -------------------
-To test the project, use `cargo run` in the root directory.
+To test the project, use `cargo test` in the root directory.
 
-Hum has two required, positional command-line arguments:
-  1. the path of the \*.hum input file
-  2. the path of the \*.wav output file
+Using the CLI
+-------------
+Hum has two modes of operation: **Conversion** and **Editing**.
 
-To convert the included \*.hum file, "daisy.hum," to a file called "daisy.wav," use the following command in the root directory:
+### 1. Conversion Mode
+To convert a \*.hum file to a \*.wav file, provide the input and output paths:
 
 `cargo run daisy.hum daisy.wav`
+
+### 2. Editor Mode
+To open the interactive terminal editor, use the `edit` subcommand followed by the filename:
+
+`cargo run edit mysong.hum`
+
+If the file does not exist, it will be created.
 
 Installing the Latest Release
 -----------------------------
@@ -37,106 +45,360 @@ Then you can run the following command in the terminal:
 
 `cargo install hum`
 
-Now you can use hum like any other CLI tool. For example, presuming the file `daisy.hum` exists in the current directory, you could use:
+Now you can use hum like any other CLI tool:
 
-`hum daisy.hum daisy.wav`
+```bash
+# Convert a file
+hum daisy.hum daisy.wav
+
+# Edit a file
+hum edit mysong.hum
+```
 
 Using Hum as a Library
 ----------------------
-You can also use Hum as a library in your own Rust programs. Right now, there is one method which implements the functionality of the CLI tool:
+You can also use Hum as a library in your own Rust programs.
 
-```
+```rust
 extern crate hum;
 ...
 hum::convert_to_wav(input, output);
 ```
 
-An Explanation of the Hum Music Notation Language:
---------------------------------------------------
-The Hum music notation language is intended to be easily interpreted by human musicians and computers. It is still in early development and subject to change, but here is a brief explanation of the features available so far. I encourage you to look at the included example files and modify them to help you understand how the language works. First off, here is what the language looks like:
+Interactive Editor Controls
+---------------------------
+The Hum editor is a modal editor (similar to Vim) with the following controls:
+
+**Navigation:**
+- `h`, `j`, `k`, `l` / Arrows: Move cursor
+- `m` / `M`: Next / Previous measure
+- `>` / `<`: Next / Previous note
+
+**Editing:**
+- `i`: Enter Insert mode (Esc to exit)
+- `x`: Delete note
+- `D`: Delete line
+- `u` / `R`: Undo / Redo
+- `n`: Insert new line below
+- `;`: End line & start new line
+
+**Note Entry:**
+- `a`-`g`: Insert note (e.g., 'c' inserts 'Cn')
+- `r`: Insert rest
+- `]` / `[`: Transpose +1 / -1 semitone
+- `}` / `{`: Octave +1 / -1
+
+**Duration:**
+- `1`, `2`, `4`, `8`, `6`, `3`: Set duration (1/1 to 1/32)
+- `+` / `-`: Add / Remove dot
+
+**Commands:**
+- `|`: Insert measure
+- `*`: Insert checkpoint
+- `%`: Insert voice
+- `F`: Format file
+
+**Playback:**
+- `p`: Play entire file
+- `P`: Play section (from last checkpoint)
+- `Esc`: Stop playback
+
+**General:**
+- `w`: Save file
+- `q`: Quit
+- `?`: Toggle Help
+
+An Explanation of the Hum Music Notation Language
+-------------------------------------------------
+The Hum music notation language is designed to be easily interpreted by both human musicians and computers. While it is still in early development and subject to change, the following is a brief explanation of the features available so far. We encourage you to examine the included example files and modify them to better understand how the language works.
+
+Here is an example of what the language looks like:
 
 ```
 ~ DAISY BELL by Harry Dacre
 ~ Based on an 1892 print in The Johns Hopkins University Lester S Levy Sheet Music Collection
 ~ Arranged by Connor Bulakites to demonstrate the Hum Synthesizer
 
-[ 180_bpm ][ 3/4 ]
+[ 180_bpm ] [ 3/4 ]
 
-***********************************************************************
-
-% square
-| (Dn_5 1/2)+ -------------------- | (Bn_4 1/2)+ -------------------- ;
-~ Dai-                             ~ sy!
-
-% sine
-| (Rest 1/4) (Bn_4 1/4) (Bn_4 1/4) | (Rest 1/4) (Gn_4 1/4) (Gn_4 1/4) ;
-| (Rest 1/4) (Gn_4 1/4) (Gn_4 1/4) | (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) ;
-| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) ;
-| (Dn_4 1/2)+ -------------------- | (Bn_3 1/2)+ -------------------- ;
-
-% sawtooth
-| (Gn_2 1/2)+ -------------------- | (Dn_2 1/2)+ -------------------- ;
-
-
-***********************************************************************
+*********************************************************************************************
 
 % square
-| (Gn_4 1/2)+ -------------------- | (Dn_4 1/2)+ -------------------- ;
-~ Dai-                             ~ sy!
+| (Dn_5 1/2)+ ----------------------- | (Bn_4 1/2)+ ----------------------- ;
+  ~ Dai-                                ~ sy!
 
 % sine
-| (Rest 1/4) (Dn_4 1/4) (Dn_4 1/4) | (Rest 1/4) (Bn_3 1/4) (Bn_3 1/4) ;
-| (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) | (Rest 1/4) (Gn_3 1/4) (Gn_3 1/4) ;
-| (Gn_3 1/2)+ -------------------- | (Dn_3 1/2)+ -------------------- ;
+| (Rest 1/4)  (Bn_4 1/4)  (Bn_4 1/4)  | (Rest 1/4)  (Gn_4 1/4)  (Gn_4 1/4)  ;
+| (Rest 1/4)  (Gn_4 1/4)  (Gn_4 1/4)  | (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  ;
+| (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  | (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  ;
+| (Dn_4 1/2)+ ----------------------- | (Bn_3 1/2)+ ----------------------- ;
 
 % sawtooth
-| (Bn_1 1/2)+ -------------------- | (Gn_1 1/2)+ -------------------- ;
+| (Gn_2 1/2)+ ----------------------- | (Dn_2 1/2)+ ----------------------- ;
+
+
+*********************************************************************************************
+
+% square
+| (Gn_4 1/2)+ ----------------------- | (Dn_4 1/2)+ ----------------------- ;
+  ~ Dai-                                ~ sy!
+
+% sine
+| (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  | (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  ;
+| (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  ;
+| (Gn_3 1/2)+ ----------------------- | (Dn_3 1/2)+ ----------------------- ;
+
+% sawtooth
+| (Bn_1 1/2)+ ----------------------- | (Gn_1 1/2)+ ----------------------- ;
+
+*********************************************************************************************
+
+% square
+| (En_4 1/4)  (Fs_4 1/4)  (Gn_4 1/4)  | (En_4 1/2) ------------ (Gn_4 1/4)  ;
+  ~ Give      ~ me        ~ your        ~ an-                   ~ swer,
+
+% sine
+| (En_3 1/4)  (Fs_3 1/4)  (Gn_3 1/4)  | (En_3 1/2) ------------ (Gn_3 1/4)  ;
+
+% sawtooth
+| (Cn_1 1/4)  (Rest 1/2) ------------ | (Cn_1 1/4)  (Rest 1/2) ------------ ;
+| (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  | (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  ;
+| (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  ;
+| (Rest 1/4)  (En_3 1/4)  (En_3 1/4)  | (Rest 1/4)  (En_3 1/4)  (En_3 1/4)  ;
+
+*********************************************************************************************
+
+% square
+| (Dn_4 1/2)+ ----------------------- | (Dn_4 1/2) ------------ (Rest 1/4)  ;
+  ~ do!
+
+% sine
+| (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  | (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  ;
+| (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  ;
+| (Dn_3 1/2)+ ----------------------- | (Dn_3 1/2)+ ----------------------- ;
+
+% sawtooth
+| (Gn_1 1/4)  (Dn_2 1/4)  (Bn_1 1/4)  | (Gn_1 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (An_4 1/2)+ ----------------------- | (Dn_5 1/2)+ ----------------------- ;
+  ~ I'm                                 ~ half
+
+% sine
+| (An_3 1/2)+ ----------------------- | (Dn_4 1/2)+ ----------------------- ;
+
+% sawtooth
+| (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  | (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  ;
+| (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  | (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  ;
+| (Rest 1/4)  (An_3 1/4)  (An_3 1/4)  | (Rest 1/4)  (Fs_3 1/4)  (Fs_3 1/4)  ;
+| (Fs_3 1/4)  (Rest 1/2) ------------ | (Dn_3 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (Bn_4 1/2)+ ----------------------- | (Gn_4 1/2)+ ----------------------- ;
+  ~ cra-                                ~ zy
+
+% sine
+| (Rest 1/4)  (Gn_4 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (Gn_4 1/4)  (Gn_4 1/4)  ;
+| (Rest 1/4)  (Dn_4 1/4)  (Dn_3 1/4)  | (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  ;
+| (Bn_3 1/2)+ ----------------------- | (Gn_3 1/2)+ ----------------------- ;
+
+% sawtooth
+| (Gn_2 1/2)+ ----------------------- | (En_2 1/2)+ ----------------------- ;
+
+*********************************************************************************************
+
+% square
+| (En_4 1/4)  (Fs_4 1/4)  (Gn_4 1/4)  | (An_4 1/2) ------------ (Bn_4 1/4)  ;
+  ~ All       ~ for       ~ the         ~ love                  ~ of
+
+% sine
+| (En_3 1/4)  (Fs_3 1/4)  (Gn_3 1/4)  | (An_3 1/2) ------------ (Bn_3 1/4)  ;
+
+% sawtooth
+| (Rest 1/4)  (Cs_4 1/4)  (Cs_4 1/4)  | (Rest 1/4)  (Cs_4 1/4)  (Cs_4 1/4)  ;
+| (Rest 1/4)  (An_3 1/4)  (An_3 1/4)  | (Rest 1/4)  (An_3 1/4)  (An_3 1/4)  ;
+| (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  ;
+| (An_3 1/4)  (Rest 1/2) ------------ | (An_3 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (An_4 1/2)+ ----------------------- | (An_4 1/4)  (Rest 1/4)  (Bn_4 1/4)  ;
+  ~ you!                                                        ~ It
+
+% sine
+| (An_3 1/2)+ ----------------------- | (An_3 1/4)  (Rest 1/2) ------------ ;
+
+% sawtooth
+| (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  | (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  ;
+| (Rest 1/4)  (An_3 1/4)  (An_3 1/4)  | (Rest 1/4)  (An_3 1/4)  (An_3 1/4)  ;
+| (Rest 1/4)  (Fs_3 1/4)  (Fs_3 1/4)  | (Rest 1/4)  (Fs_3 1/4)  (Fs_3 1/4)  ;
+| (Dn_3 1/4)  (Rest 1/2) ------------ | (Dn_3 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (Cn_5 1/4)  (Bn_4 1/4)  (An_4 1/4)  | (Dn_5 1/2) ------------ (Bn_4 1/4)  ;
+  ~ won't     ~ be        ~ a           ~ sty-                  ~ lish
+
+% sine
+| (Cn_4 1/4)  (Bn_3 1/4)  (An_3 1/4)  | (Dn_4 1/2) ------------ (Bn_3 1/4)  ;
+
+% sawtooth
+| (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  | (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  ;
+| (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  | (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  ;
+| (Rest 1/4)  (An_3 1/4)  (An_3 1/4)  | (Rest 1/4)  (Fs_3 1/4)  (Fs_3 1/4)  ;
+| (Fs_3 1/4)  (Rest 1/2) ------------ | (Dn_3 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (An_4 1/4)  (Gn_4 1/2) ------------ | (Gn_4 1/2) ------------ (An_4 1/4)  ;
+  ~ mar-      ~ riage,                  ~ O                     ~ I
+
+% sine
+| (An_3 1/4)  (Gn_3 1/2) ------------ | (Gn_3 1/2) ------------ (An_3 1/4)  ;
+
+% sawtooth
+| (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  | (Rest 1/4)  (Dn_4 1/4)  (Dn_4 1/4)  ;
+| (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  | (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  ;
+| (Gn_3 1/4)  (Rest 1/2) ------------ | (Gn_2 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (Bn_4 1/2) ------------ (Gn_4 1/4)  | (En_4 1/2) ------------ (Gn_4 1/4)  ;
+  ~ can't                 ~ af-         ~ fford                 ~ a
+
+% sine
+| (Bn_3 1/2) ------------ (Gn_3 1/4)  | (En_3 1/2) ------------ (Gn_3 1/4)  ;
+
+% sawtooth
+| (Rest 1/4)  (En_4 1/4)  (En_4 1/4)  | (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  ;
+| (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  | (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  ;
+| (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (En_3 1/4)  (En_3 1/4)  ;
+| (En_2 1/4)  (Rest 1/2) ------------ | (Cn_2 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (En_4 1/4)  (Dn_4 1/2) ------------ | (Dn_4 1/4)  (Rest 1/4)  (Dn_4 1/4)  ;
+  ~ car-      ~ riage,                                          ~ but
+
+% sine
+| (En_3 1/4)  (Dn_3 1/2) ------------ | (Dn_3 1/4)  (Rest 1/4)  (Dn_3 1/4)  ;
+
+% sawtooth
+| (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  | (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  ;
+| (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (An_3 1/4)  (An_3 1/4)  ;
+| (Rest 1/4)  (Dn_3 1/4)  (Dn_3 1/4)  | (Rest 1/4)  (Dn_3 1/4)  (Dn_3 1/4)  ;
+| (Gn_1 1/4)  (Rest 1/2) ------------ | (Fs_1 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (Gn_4 1/2) ------------ (Bn_4 1/4)  | (An_4 1/4)  (Rest 1/4)  (An_4 1/4)  ;
+  ~ you'll-               ~ look        ~ sweet,                ~ up-
+
+% sine
+| (Gn_3 1/2) ------------ (Bn_3 1/4)  | (An_3 1/4)  (Rest 1/4)  (An_3 1/4)  ;
+
+% sawtooth
+| (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  | (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  ;
+| (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (An_3 1/4)  (An_3 1/4)  ;
+| (Rest 1/4)  (Dn_3 1/4)  (Dn_3 1/4)  | (Rest 1/4)  (Dn_3 1/4)  (Dn_3 1/4)  ;
+| (Gn_2 1/4)  (Rest 1/2) ------------ | (Fs_2 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (Gn_4 1/2) ------------ (Bn_4 1/4)  | (An_4 1/4)  (Rest 1/4)  (Bn_4 1/8)  (Cn_5 1/8)  ;
+  ~ on                    ~ the         ~ seat                  ~ of        ~ a
+
+% sine
+| (Gn_3 1/2) ------------ (Bn_3 1/4)  | (An_3 1/4)  (Rest 1/4)  (Bn_3 1/8)  (Cn_4 1/8)  ;
+
+% sawtooth
+| (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  | (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4) ------------ ;
+| (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (An_3 1/4)  (An_3 1/4) ------------ ;
+| (Rest 1/4)  (Dn_3 1/4)  (Dn_3 1/4)  | (Rest 1/4)  (Dn_3 1/4)  (Dn_3 1/4) ------------ ;
+| (Gn_2 1/4)  (Rest 1/2) ------------ | (Fs_2 1/4)  (Rest 1/2) ------------------------ ;
+
+*********************************************************************************************
+
+% square
+| (Dn_5 1/4)  (Bn_4 1/4)  (Gn_4 1/4)  | (An_4 1/2) ------------ (Dn_4 1/4)  ;
+  ~ bi-       ~ cy-       ~ cle         ~ built                 ~ for
+
+% sine
+| (Dn_4 1/4)  (Bn_3 1/4)  (Gn_3 1/4)  | (An_3 1/2) ------------ (Dn_3 1/4)  ;
+
+% sawtooth
+| (Rest 1/4)  (Bn_3 1/4)  (Bn_3 1/4)  | (Rest 1/4)  (Cn_4 1/4)  (Cn_4 1/4)  ;
+| (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  | (Rest 1/4)  (Gn_3 1/4)  (Gn_3 1/4)  ;
+| (Rest 1/4)  (Dn_3 1/4)  (Dn_3 1/4)  | (Rest 1/4)  (Dn_3 1/4)  (Dn_3 1/4)  ;
+| (Gn_2 1/4)  (Rest 1/2) ------------ | (Dn_2 1/4)  (Rest 1/2) ------------ ;
+
+*********************************************************************************************
+
+% square
+| (Gn_4 1/2)+ ----------------------- | (Gn_4 1/2)+  ;
+  ~ two!
+
+% sine
+| (Gn_5 1/2)+ ----------------------- | (Gn_5 1/2)+  ;
+| (Gn_3 1/2)+ ----------------------- | (Gn_3 1/2)+  ;
+
+% sawtooth
+| (Gn_2 1/4)  (Dn_2 1/4)  (Bn_1 1/4)  | (Gn_1 1/2)+  ;
+
 ```
 
-Now for some explanation of what you're seeing:
+### Language Features
 
-- The tilde character `~` indicates a single-line comment. Everything that appears after this symbol on a line is ignored by the computer. I use this for annotations and for lyrics.
+- **Comments:** The tilde character `~` indicates a single-line comment. Everything that appears after this symbol on a line is ignored by the computer. This is useful for annotations and lyrics.
 
-- The tempo tag `[ 100_bpm ]` sets the tempo of the song to 100 _beats per minute_. You can change the numeric portion of the tag to change the tempo, but you must keep the `_bpm` suffix. You can change the tempo partway through a song by putting another tempo tag between any two measures.
+- **Tempo:** The tempo tag `[ 100_bpm ]` sets the tempo of the song to 100 _beats per minute_. You can change the numeric portion of the tag to adjust the tempo, but you must keep the `_bpm` suffix. You can change the tempo partway through a song by placing another tempo tag between any two measures.
 
-- The time signature tag `[ 3/4 ]` sets the time signature of the music. The numerator corresponds to the number of beats per measure, and the denominator corresponds to the reciprocal of the length value of one beat. So in 3/4 time, there are 3 beats with length "1/4" per measure. For a more in-depth explanation of time signatures, see: https://en.wikipedia.org/wiki/Time_signature. You can change the time signature partway through a song by putting another time signature tag between any two measures.
+- **Time Signature:** The time signature tag `[ 3/4 ]` sets the time signature of the music. The numerator corresponds to the number of beats per measure, and the denominator corresponds to the reciprocal of the length value of one beat. For example, in 3/4 time, there are 3 beats with length "1/4" per measure. You can change the time signature partway through a song by placing another time signature tag between any two measures.
 
-- The line of asterisks `*` indicates a write checkpoint. You should have at least one of these before your first measure. _All lines of music written before the next checkpoint are presumed to occur concurrently_. Lines of music written after the next checkpoint are presumed to start immediately after the last measure in the previous checkpoint. The number of measures or horizontal columns of music you allow per checkpoint and the total number of checkpoints you use are a matter of style and up to you. In the included examples, I put two measures per checkpoint because it fits nicely on an 80-column terminal screen, but you are under no obligation to follow this convention. Additionally, the number of asterisks in the checkpoint line is also a matter of style (you just have to have at least one).
+- **Checkpoints:** The line of asterisks `*` indicates a write checkpoint. You should have at least one of these before your first measure. _All lines of music written before the next checkpoint are presumed to occur concurrently_. Lines of music written after the next checkpoint are presumed to start immediately after the last measure in the previous checkpoint.
 
-- The division sign `%` is used to switch the voice or "instrument" of lines of music. When you switch to a particular voice, all lines of music underneath the command will be played with that voice until you switch to a new voice. As of now, there are three supported voices: `sine`, `square`, and `sawtooth`.
+- **Voices:** The division sign `%` is used to switch the voice or "instrument" of lines of music. When you switch to a particular voice, all lines of music underneath the command will be played with that voice until you switch to a new voice. Currently, there are three supported voices: `sine`, `square`, and `sawtooth`.
 
-- The pipe operator `|` indicates the start of a new measure. To ensure that your music is played back correctly, _you must start every measure with the pipe operator_. Additionally, you should make sure that the total length of notes and rests in your measure adds up to the value of the current time signature. Otherwise, music from one measure may bleed over incorrectly into another measure.
+- **Measures:** The pipe operator `|` indicates the start of a new measure. To ensure that your music is played back correctly, _you must start every measure with the pipe operator_. Additionally, ensure that the total length of notes and rests in your measure adds up to the value of the current time signature.
 
-- The semicolon `;` serves as the reset character. When a semicolon is encountered, Hum knows that you are done writing one line of music and want to start writing another line of music starting at the last checkpoint. Typically, _all lines of music after a checkpoint which are meant to be played concurrently should end in a semicolon_.
+- **Reset Character:** The semicolon `;` serves as the reset character. When a semicolon is encountered, Hum knows that you are done writing one line of music and want to start writing another line of music starting at the last checkpoint. Typically, _all lines of music after a checkpoint which are meant to be played concurrently should end in a semicolon_.
 
-- Hum ignores minus signs `-`. Essentially, they're treated the same as whitespace. This is done to make it easier for you to vertically align concurrent lines of music within a checkpoint so that it is more readable to humans. Exactly how you choose to utilize this feature is up to your stylistic discretion.
+- **Alignment:** Hum ignores minus signs `-`. They are treated as whitespace. This allows you to vertically align concurrent lines of music within a checkpoint for better readability.
 
-- Finally, we must provide an explanation for notes:
+### Notes
 
-  - A note consists of two values enclosed within parentheses and separated by a space. The first value is the note name, and the second value is the note length. The note length divided by the current time signature determines the fraction of the measure that the note takes up. Within a single line of music, notes are added to a measure one after another in succession, reading from left to right.
+- A note consists of two values enclosed within parentheses and separated by a space: `(NoteName Length)`. The note length divided by the current time signature determines the fraction of the measure that the note occupies.
 
-  - The `+` operator can be appended to the end of a note outside the parentheses to increase the length of the note by one half of its original length value. This corresponds to a "dot" in traditional music notation. So, for example, the note (An_4 1/2)+ has a total length of `1/2 + 1/4 = 3/4`. You can append as many plus signs to the end of a note as you want to keep increasing the length value by one half its original value.
+- The `+` operator can be appended to the end of a note outside the parentheses to increase the length of the note by one half of its original length value (equivalent to a "dot" in traditional notation). For example, `(An_4 1/2)+` has a total length of `1/2 + 1/4 = 3/4`.
 
-  - There are currently _96_ possible note names corresponding roughly to the keys on a grand piano. The note names are formatted like so: `{pitch}_{octave}`. If you are writing in a key that uses sharps, these are the pitches that you should use:
+- There are currently _96_ possible note names corresponding roughly to the keys on a grand piano. The note names are formatted as `{pitch}_{octave}`.
 
-    `["Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs", "An", "As", "Bn"]`
+- **Sharps:** `["Cn", "Cs", "Dn", "Ds", "En", "Fn", "Fs", "Gn", "Gs", "An", "As", "Bn"]`
+- **Flats:** `["Cn", "Df", "Dn", "Ef", "En", "Fn", "Gf", "Gn", "Af", "An", "Bf", "Bn"]`
 
-  - If you are writing in a key that uses flats, these are the pitches that you should use:
+- In this notation, "n" refers to "natural," "s" refers to "sharp," and "f" refers to "flat."
 
-    `["Cn", "Df", "Dn", "Ef", "En", "Fn", "Gf", "Gn", "Af", "An", "Bf", "Bn"]`
+- The octave part of a note can range from 0 to 7 (e.g., `Cn_0` to `Bn_7`). Octave numbers roll over on C natural (e.g., `Bn_4` is followed by `Cn_5`).
 
-  - In this style, "n" refers to "natural," "s" refers to "sharp," and "f" refers to "flat." Although it's unusual, you can mix sharps and flats in the same song if you wish.
+- The special note `Rest` corresponds to silence within a single voice.
 
-  - Additionally, the octave part of a note can range from 0 to 7, with the lowest possible note being `Cn_0` and the highest possible note being `Bn_7`. Note that octave numbers roll over on C natural, so this is how part of the sequence of notes in order of pitch goes: `An_4, As_4, Bn_4, Cn_5, Cs_5, Dn_5, etc...`.
+- To automatically format a *.hum file, you can press `shift+F` while in `Normal` mode in the editor. The formatter will vertically align notes in a section based on the beat, and it will also apply the default style rules. 
 
-  - There is also a special note called `Rest` which corresponds to silence within a single voice.
+About the Project
+-----------------
+This project was created to explore the possibilities of a text-based music notation language that is easily readable by both humans and computers. The goal is to provide a simple yet powerful tool for composing and synthesizing music, potentially aiding in the digital preservation of musical scores. It also serves as an exploration of audio synthesis and application development in Rust.
 
-  - If you use a note value that is not recognized, the current behavior is to not insert the note, which will throw off the timing of your measure. I will work on fixing this in a later version.
-
-Why Did I Make This?
---------------------
-I thought it was cool, and I've never programmed a large project in Rust before, so obviously I'm the person for the job 😎. Also, I like the idea of an open music markup language being easily readable by both humans and computers. I think if it's implemented correctly, it might make it easier to preserve musical scores in digital format. This has been a fun project to get started with so far, and I hope that people make awesome music with it.
-
-Why the Choice of License?
---------------------------
-For more insight on what you currently _are_ and _aren't_ allowed to do with this code, you can read more about the terms of the GPL at [the GNU website](https://www.gnu.org/licenses/licenses.html). If anybody actually starts contributing to or using this code and wants to convince me to release it under an alternative license, then just contact me, and I am open to having a conversation regarding the matter 🙂.
+License
+-------
+This project is licensed under the GNU General Public License (GPL). For more details, please refer to the `LICENSE` file included in the repository or visit [the GNU website](https://www.gnu.org/licenses/licenses.html).

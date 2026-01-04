@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- **Interactive Editor**: A new `hum edit` subcommand that launches a terminal-based editor.
+    - **Convenient Composition**: Shortcuts for adding, deleting, and transposing notes.
+    - **Live Playback**: Play the current file or start playback from the cursor position.
+    - **Vim-like Navigation**: Supports Normal and Insert modes for efficient score editing.
+    - **Automatic Formatting**: Vertically aligns notes based on duration and applies styling.
+- **Comprehensive Testing**: Added unit and integration tests for parsing, transposition, frequency math, and duration logic.
+
+### Changed
+- **Code Cleanup**: Refactored internal logic for better modularity and maintainability.
+
+### Fixed
+- **Music Theory Correction**: Updated dotted note duration logic. Each subsequent dot now correctly adds half the value of the previous dot (geometric series) rather than a fixed 50% of the base value.
+
 ## [0.6.0] - 2023-09-17
 ### Changed
 - removed public `play` function due to dependency on unmaintained portaudio library

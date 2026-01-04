@@ -1,4 +1,4 @@
-Hound v3.4.0 is an external dependency linked via crates.io which is used to
+Hound v3.5.1 is an external dependency linked via crates.io which is used to
 write data to WAV files. It is licensed under the Apache License version 2.
 
 Hound author: Ruud van Asseldonk
