@@ -1,0 +1,5 @@
+Ropey v1.6.1 is an external dependency linked via crates.io which is used as the
+underlying text buffer data structure for efficient editing operations. It is
+licensed under the MIT License.
+
+Ropey source: https://github.com/cessen/ropey

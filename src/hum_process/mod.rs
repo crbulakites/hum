@@ -16,173 +16,210 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-mod hum_math;
+pub mod hum_math;
 mod hum_voice;
 
+use std::collections::HashMap;
+
 use super::hum_error::GenerateError;
+use crate::SAMPLE_RATE;
 
+const DEFAULT_VOLUME: f32 = 0.05;
 
-// The number of samples of the waveform per seconds of audio:
-static SAMPLE_RATE: u32 = 44_100;
+struct PlaybackState {
+    beats_per_second: f32,
+    measure_index: i32,
+    measure_greatest: i32,
+    checkpoint_index: i32,
+    time_signature: f32,
+    beats_per_measure: f32,
+    measure_duration: f32,
+    timestamp_at_measure_start: f32,
+    timestamp_offset_in_measure: f32,
+    voice: String,
+}
 
+impl PlaybackState {
+    fn new() -> Self {
+        let beats_per_second = 1.0;
+        let beats_per_measure = 4.0;
+        PlaybackState {
+            beats_per_second,
+            measure_index: -1,
+            measure_greatest: -1,
+            checkpoint_index: -1,
+            time_signature: 1.0,
+            beats_per_measure,
+            measure_duration: beats_per_measure / beats_per_second,
+            timestamp_at_measure_start: 0.0,
+            timestamp_offset_in_measure: 0.0,
+            voice: "sine".to_string(),
+        }
+    }
+}
 
+/// Processes a list of commands to generate an audio waveform.
+///
+/// # Arguments
+///
+/// * `score_commands` - A vector of tuples representing the parsed commands from the hum file.
+///
+/// # Returns
+///
+/// A `Result` containing the generated waveform as a `Vec<f32>` or a `GenerateError`.
 pub fn run_commands(score_commands: Vec<(String, String)>) -> Result<Vec<f32>, GenerateError> {
-    // The following variables may or will change as we iterate through the *.hum file:
-    // -------------------------------------------------------------------------------------------
-    // The current number of beats per second (defaults to 1.0 for a tempo of 60.0):
-    let mut beats_per_second: f32 = 1.0;
-    // The current measure being operated on, indexed from 0:
-    // This starts at -1 because it should be immediately indexed at the start of the song:
-    let mut measure_index: i32 = -1;
-    // The greatest measure index seen so far, indexed from 0:
-    let mut measure_greatest: i32 = -1;
-    // The anticipated value of measure index immediately after a checkpoint:
-    let mut checkpoint_index: i32 = -1;
-    // The floating point value of the current time signature (defaults to 1.0):
-    let mut time_signature: f32 = 1.0;
-    // The number of beats in the current measure (defaults to 4):
-    let mut beats_per_measure: f32 = 4.0;
-    // The duration of the current measure in seconds:
-    let mut measure_duration = beats_per_measure / beats_per_second;
-    // The number of seconds into the track at the start of the current measure:
-    let mut timestamp_at_measure_start: f32 = 0.0;
-    // The number of seconds into the current measure from the start of the current measure:
-    let mut timestamp_offset_in_measure: f32 = 0.0;
-    // The current "instrument" or "sound" for notes being inserted into the track (default sine):
-    let mut voice: String = "sine".to_string();
-    // The audio track itself; waveforms will be added to this as the *hum file is parsed:
+    let mut state = PlaybackState::new();
     let mut track: Vec<f32> = Vec::new();
-    // -------------------------------------------------------------------------------------------
 
     // Get all of the frequencies for the 12-note scale with redundant sharps and flats:
-    let mut note_frequencies = hum_math::get_standard_note_frequencies("sharps");
-    let note_frequencies_flats = hum_math::get_standard_note_frequencies("flats");
+    let mut note_frequencies =
+        hum_math::get_standard_note_frequencies(hum_math::AccidentalStyle::Sharps);
+    let note_frequencies_flats =
+        hum_math::get_standard_note_frequencies(hum_math::AccidentalStyle::Flats);
     note_frequencies.extend(note_frequencies_flats);
 
-    // Carry out the commands of all the sentences in the order that they appear:
     for command in score_commands {
-        // Separate the command into its verb clause and its noun clause:
         let verb = command.0;
         let noun = command.1;
 
-        // Each possible match should correspond to a command as defined in hum_parse.rustpeg
         match verb.as_ref() {
-            "comment" => {
-                // Don't do anything on a comment
-            }
-            "tempo" => {
-                // Beats per second corresponds to tempo (beats per minute) divided by seconds:
-                beats_per_second = noun.parse::<f32>().unwrap() / 60.0;
-            }
-            "time" => {
-                // Parse the numerator and denominator of the time signature:
-                let time_signature_parts: Vec<&str> = noun.split("/").collect();
-                let numerator: f32 = time_signature_parts[0].parse::<f32>().unwrap();
-                let denominator: f32 = time_signature_parts[1].parse::<f32>().unwrap();
-
-                // Calculate the floating point value of the time signature:
-                time_signature = numerator / denominator;
-
-                // The denominator of the time signature corresponds to the beats per measure:
-                beats_per_measure = numerator;
-                measure_duration = beats_per_measure / beats_per_second;
-            }
-            "checkpoint" => {
-                // Advance checkpoint by index of the next measure (disregarding first measure):
-                // Using greatest measure in case tracks within one checkpoint have different
-                // numbers of measures (which is erroneous anyway):
-                checkpoint_index = measure_greatest + 1;
-                measure_index = measure_greatest;
-            }
-            "voice" => {
-                voice = noun;
-            }
-            "measure" => {
-                // Indicate that a measure was added:
-                measure_index += 1;
-
-                // Advance timestamp to the beginning of the new measure:
-                timestamp_at_measure_start = measure_duration * (measure_index as f32);
-
-                // Always set measure offset to 0.0 at the beginning of a new measure:
-                timestamp_offset_in_measure = 0.0;
-
-                // The measure index can backtrack, but the greatest measure should not:
-                if measure_index > measure_greatest {
-                    measure_greatest = measure_index;
-                }
-            }
-            "reset" => {
-                // Reset the measure index back to the last checkpoint:
-                measure_index = checkpoint_index - 1;
-            }
-            // Assume that anything else is a note:
-            _ => {
-                match note_frequencies.get(&verb[..]) {
-                    // Calculate note duration:
-                    // If the note is recognized:
-                    Some(note_frequency) => {
-                        let length_parts: Vec<&str> = noun.split("/").collect();
-                        let length_numerator: f32 = length_parts[0].parse::<f32>().unwrap();
-
-                        // Count the number of pluses "dots" in note before parsing denominator:
-                        let mut length_denominator = length_parts[1].to_string();
-                        let mut pluses = 0;
-
-                        for (i, ch) in length_parts[1].chars().enumerate() {
-                            if ch == '+' {
-                                pluses += 1;
-                                // Remove after counting so we don't break f32 parsing:
-                                length_denominator.remove(i);
-                            }
-                        }
-
-                        // Shadow previous text value with evaluated floating point:
-                        let length_denominator: f32 = length_denominator.parse::<f32>().unwrap();
-
-                        // The fraction of the measure that a note takes up is its indicated
-                        // length divided by the time signature:
-                        let note_length_of_measure =
-                            (length_numerator / length_denominator) / time_signature;
-
-                        // Calcaulate the note duration:
-                        let mut note_duration = measure_duration * note_length_of_measure;
-
-                        // A "plus" or "dot" increases the note duration by 50 percent:
-                        note_duration = note_duration + (pluses as f32) * (0.5 * note_duration);
-
-                        // Get the current note position in the track in seconds:
-                        let note_position =
-                            timestamp_at_measure_start + timestamp_offset_in_measure;
-
-                        add_note_to_track(
-                            note_position,  // Start position of the note in the track in seconds
-                            note_duration,  // Duration of the note to add in seconds
-                            note_frequency, // Frequency of the note
-                            &voice[..],     // "instrument" or "sound" of the note
-                            &mut track,     // Master audio track to be mutated
-                        );
-
-                        // Update the measure offset:
-                        timestamp_offset_in_measure += note_duration;
-                    }
-                    // If the note isn't recognized:
-                    None => {
-                        return Err(GenerateError{message: format!("There is no note named {}", verb)});
-                    }
-                }
-            }
+            "comment" => {}
+            "tempo" => handle_tempo(&mut state, &noun)?,
+            "time" => handle_time(&mut state, &noun)?,
+            "checkpoint" => handle_checkpoint(&mut state),
+            "voice" => state.voice = noun,
+            "measure" => handle_measure(&mut state),
+            "reset" => handle_reset(&mut state),
+            _ => handle_note(&mut state, &mut track, &note_frequencies, &verb, &noun)?,
         }
     }
 
     Ok(track)
 }
 
+fn handle_tempo(state: &mut PlaybackState, noun: &str) -> Result<(), GenerateError> {
+    state.beats_per_second = noun.parse::<f32>().map_err(|_| GenerateError {
+        message: format!("Invalid tempo value: {}", noun),
+    })? / 60.0;
+    Ok(())
+}
+
+fn handle_time(state: &mut PlaybackState, noun: &str) -> Result<(), GenerateError> {
+    let time_signature_parts: Vec<&str> = noun.split("/").collect();
+    if time_signature_parts.len() != 2 {
+        return Err(GenerateError {
+            message: format!("Invalid time signature format: {}", noun),
+        });
+    }
+    let numerator: f32 = time_signature_parts[0]
+        .parse::<f32>()
+        .map_err(|_| GenerateError {
+            message: format!(
+                "Invalid time signature numerator: {}",
+                time_signature_parts[0]
+            ),
+        })?;
+    let denominator: f32 = time_signature_parts[1]
+        .parse::<f32>()
+        .map_err(|_| GenerateError {
+            message: format!(
+                "Invalid time signature denominator: {}",
+                time_signature_parts[1]
+            ),
+        })?;
+
+    state.time_signature = numerator / denominator;
+    state.beats_per_measure = numerator;
+    state.measure_duration = state.beats_per_measure / state.beats_per_second;
+    Ok(())
+}
+
+fn handle_checkpoint(state: &mut PlaybackState) {
+    state.checkpoint_index = state.measure_greatest + 1;
+    state.measure_index = state.measure_greatest;
+}
+
+fn handle_measure(state: &mut PlaybackState) {
+    state.measure_index += 1;
+    state.timestamp_at_measure_start = state.measure_duration * (state.measure_index as f32);
+    state.timestamp_offset_in_measure = 0.0;
+
+    if state.measure_index > state.measure_greatest {
+        state.measure_greatest = state.measure_index;
+    }
+}
+
+fn handle_reset(state: &mut PlaybackState) {
+    state.measure_index = state.checkpoint_index - 1;
+}
+
+fn handle_note(
+    state: &mut PlaybackState,
+    track: &mut Vec<f32>,
+    note_frequencies: &HashMap<String, f32>,
+    verb: &str,
+    noun: &str,
+) -> Result<(), GenerateError> {
+    match note_frequencies.get(verb) {
+        Some(note_frequency) => {
+            let length_parts: Vec<&str> = noun.split("/").collect();
+            if length_parts.len() != 2 {
+                return Err(GenerateError {
+                    message: format!("Invalid note length format: {}", noun),
+                });
+            }
+            let length_numerator: f32 =
+                length_parts[0].parse::<f32>().map_err(|_| GenerateError {
+                    message: format!("Invalid note length numerator: {}", length_parts[0]),
+                })?;
+
+            let mut length_denominator_str = length_parts[1].to_string();
+            let pluses = length_denominator_str.matches('+').count();
+            length_denominator_str = length_denominator_str.replace("+", "");
+
+            let length_denominator: f32 =
+                length_denominator_str
+                    .parse::<f32>()
+                    .map_err(|_| GenerateError {
+                        message: format!(
+                            "Invalid note length denominator: {}",
+                            length_denominator_str
+                        ),
+                    })?;
+
+            let note_length_of_measure =
+                (length_numerator / length_denominator) / state.time_signature;
+            let base_duration = state.measure_duration * note_length_of_measure;
+
+            // Calculate duration with dots: each dot adds half the value of the previous dot
+            // Formula: duration * (2 - (1/2)^n)
+            let multiplier = 2.0 - (0.5f32).powi(pluses as i32);
+            let note_duration = base_duration * multiplier;
+
+            let note_position =
+                state.timestamp_at_measure_start + state.timestamp_offset_in_measure;
+
+            add_note_to_track(
+                note_position,
+                note_duration,
+                *note_frequency,
+                &state.voice,
+                track,
+            );
+
+            state.timestamp_offset_in_measure += note_duration;
+            Ok(())
+        }
+        None => Err(GenerateError {
+            message: format!("There is no note named {}", verb),
+        }),
+    }
+}
 
 fn add_note_to_track(
     position: f32,        // Start position of the note in the track in seconds
     duration: f32,        // Duration of the note to add in seconds
-    frequency: &f32,      // Frequency of the note
+    frequency: f32,       // Frequency of the note
     voice: &str,          // "instrument" or "sound" of the note
     track: &mut Vec<f32>, // Master audio track to be mutated
 ) {
@@ -215,7 +252,7 @@ fn add_note_to_track(
     }
 
     // Please be careful with your ears and speakers! :)
-    let volume = 0.05;
+    let volume = DEFAULT_VOLUME;
 
     // Add the waveform to the waveforms already present in the master track:
     for i in 0..sample_duration {

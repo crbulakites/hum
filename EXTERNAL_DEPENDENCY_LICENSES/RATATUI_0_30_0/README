@@ -1,0 +1,5 @@
+Ratatui v0.30.0 is an external dependency linked via crates.io which is used to
+render the terminal user interface (TUI) for the editor. It is licensed under
+the MIT License.
+
+Ratatui source: https://github.com/ratatui-org/ratatui

@@ -1,0 +1,5 @@
+Crossterm v0.29.0 is an external dependency linked via crates.io which is used to
+handle terminal input events and low-level terminal manipulation for the editor.
+It is licensed under the MIT License.
+
+Crossterm source: https://github.com/crossterm-rs/crossterm

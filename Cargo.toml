@@ -1,7 +1,8 @@
 [package]
 name = "hum"
-version = "0.6.0"
+version = "0.7.0-dev"
 authors = ["Connor Bulakites <connor@bulakites.net>"]
+edition = "2024"
 include = [
     "**/*.rs",
     "**/*.rustpeg",
@@ -31,8 +32,11 @@ path = "src/bin.rs"
 maintenance = { status = "experimental" }
 
 [dependencies]
-clap = "4.4.3"
-hound = "3.4.0"
-peg = "0.6.3"
+clap = "4.5.53"
+hound = "3.5.1"
+peg = "0.8.5"
+ratatui = "0.30.0"
+crossterm = "0.29.0"
+ropey = "1.6.1"
 
 [build-dependencies]

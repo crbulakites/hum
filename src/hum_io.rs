@@ -16,27 +16,37 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-extern crate hound;
-
-use std::fs::File;
-use std::i16;
+use std::fs;
 use std::io;
-use std::io::Read;
 
+use crate::SAMPLE_RATE;
 
 static NUM_CHANNELS: u16 = 1;
 static BIT_DEPTH: u16 = 16;
-static SAMPLE_RATE: u32 = 44_100;
 
-
+/// Reads the contents of a file into a String.
+///
+/// # Arguments
+///
+/// * `filename` - The path to the file to read.
+///
+/// # Returns
+///
+/// A `Result` containing the file contents as a `String` or an `io::Error`.
 pub fn read(filename: &str) -> Result<String, io::Error> {
-    let mut score_file = File::open(filename)?;
-    let mut score_contents = String::new();
-    score_file.read_to_string(&mut score_contents)?;
-    Ok(score_contents)
+    fs::read_to_string(filename)
 }
 
-
+/// Saves a waveform to a WAV file.
+///
+/// # Arguments
+///
+/// * `waveform` - A vector of floating-point samples representing the audio.
+/// * `filename` - The path where the WAV file should be saved.
+///
+/// # Returns
+///
+/// A `Result` indicating success or containing a `hound::Error`.
 pub fn save(waveform: Vec<f32>, filename: &str) -> Result<(), hound::Error> {
     let spec = hound::WavSpec {
         channels: NUM_CHANNELS,
@@ -52,5 +62,5 @@ pub fn save(waveform: Vec<f32>, filename: &str) -> Result<(), hound::Error> {
         writer.write_sample((sample * amplitude) as i16)?;
     }
 
-    Ok(writer.finalize()?)
+    writer.finalize()
 }

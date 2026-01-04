@@ -1,27 +1,23 @@
 /*
 Hum: A Music Markup Language Synthesizer
 Copyright (C) 2018 Connor R. Bulakites
- 
+
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
- 
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
- 
+
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
- 
-extern crate hound;
-extern crate peg;
 
 use std::error;
 use std::fmt;
-
 
 // Custom type for general Hum processing errors
 #[derive(Debug)]
@@ -37,10 +33,8 @@ impl fmt::Display for GenerateError {
 
 impl error::Error for GenerateError {}
 
-
 // Declaration of Peg ParseError (type specification required)
 pub type ParseError = peg::error::ParseError<peg::str::LineCol>;
-
 
 // Custom type for catch-all Hum errors.
 #[derive(Debug)]
@@ -49,13 +43,13 @@ pub enum HumError {
     GenerateError(GenerateError),
     HumParseError(ParseError),
 }
- 
+
 impl From<hound::Error> for HumError {
     fn from(err: hound::Error) -> HumError {
         HumError::FileSaveError(err)
     }
 }
- 
+
 impl From<GenerateError> for HumError {
     fn from(err: GenerateError) -> HumError {
         HumError::GenerateError(err)
@@ -87,4 +81,3 @@ impl error::Error for HumError {
         }
     }
 }
-

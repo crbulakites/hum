@@ -18,28 +18,26 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use std::f32::consts::PI;
 
+const SQUARE_WAVE_AMPLITUDE: f32 = 0.7;
 
-pub fn silence(_: f32, _: &f32) -> f32 {
+pub fn silence(_: f32, _: f32) -> f32 {
     0.0 // coerce every value to 0
 }
 
-
-pub fn sine(time: f32, frequency: &f32) -> f32 {
+pub fn sine(time: f32, frequency: f32) -> f32 {
     (time * frequency * 2.0 * PI).sin()
 }
 
-
-pub fn square(time: f32, frequency: &f32) -> f32 {
+pub fn square(time: f32, frequency: f32) -> f32 {
     let sine_value: f32 = sine(time, frequency);
 
     if sine_value >= 0.0 {
-        0.7
+        SQUARE_WAVE_AMPLITUDE
     } else {
-        -0.7
+        -SQUARE_WAVE_AMPLITUDE
     }
 }
 
-
-pub fn sawtooth(time: f32, frequency: &f32) -> f32 {
+pub fn sawtooth(time: f32, frequency: f32) -> f32 {
     2.0 * (time * frequency - (0.5 + time * frequency).floor())
 }
