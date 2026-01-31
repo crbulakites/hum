@@ -21,40 +21,50 @@ use ropey::Rope;
 use std::fs;
 use std::path::Path;
 
+/// Introduce formatting "errors" into the input string to test the formatter.
 fn make_dirty(input: &str) -> String {
     let mut output = String::new();
+
     for line in input.lines() {
         let trimmed = line.trim();
-        if trimmed.starts_with('~') {
+
+        if trimmed.is_empty() {
+            // Ignore empty lines
+            output.push_str(line);
+        } else if trimmed.starts_with('~') {
+            // Ignore comment lines
             output.push_str(line);
         } else if trimmed.starts_with('*') {
+            // Shorten checkpoint lines
             output.push_str("***");
-        } else if trimmed.is_empty() {
-            output.push_str(line);
         } else {
+            // Destroy note alignment in all other lines
             let no_hyphens = line.replace('-', " ");
             let parts: Vec<&str> = no_hyphens.split_whitespace().collect();
             let dirty_line = parts.join(" ");
+
             output.push_str(&dirty_line);
         }
         output.push('\n');
     }
-
     output
 }
 
 fn test_format_file(filename: &str) {
+    // Load a "golden" file from source and make a dirty version of it.
     let path = Path::new(filename);
     let golden_content = fs::read_to_string(path).expect("Failed to read golden file");
     let dirty_content = make_dirty(&golden_content);
     let mut rope = Rope::from_str(&dirty_content);
 
+    // Format the dirty content to see if it matches the golden file.
     formatting::format_buffer(&mut rope);
 
     let formatted_content = rope.to_string();
     let formatted_norm = formatted_content.trim();
     let golden_norm = golden_content.trim();
 
+    // If there's a mismatch, print detailed line-by-line differences.
     if formatted_norm != golden_norm {
         println!("Mismatch in file: {}", filename);
 
