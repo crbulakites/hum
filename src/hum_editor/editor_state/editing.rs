@@ -146,7 +146,7 @@ pub fn remove_dot_from_duration(state: &mut EditorState) {
     }
 }
 
-/// Parse the current duration settin into fraction and dots.
+/// Parse the current duration setting into fraction and dots.
 pub fn parse_duration_setting(duration: &str) -> (String, String) {
     if let Some(idx) = duration.find('+') {
         let fraction = duration[..idx].to_string();
@@ -328,7 +328,7 @@ mod tests {
 
     #[test]
     fn test_calculate_transposition_sharps() {
-        // C_4 + 1 semitone -> Cs_4
+        // Cn_4 + 1 semitone -> Cs_4
         let (note, octave) = calculate_transposition("Cn", 4, 1).unwrap();
         assert_eq!(note, "Cs_4");
         assert_eq!(octave, 4);
@@ -349,12 +349,12 @@ mod tests {
 
     #[test]
     fn test_calculate_transposition_octave_crossing() {
-        // B_4 + 1 semitone -> C_5
+        // Bn_4 + 1 semitone -> Cn_5
         let (note, octave) = calculate_transposition("Bn", 4, 1).unwrap();
         assert_eq!(note, "Cn_5");
         assert_eq!(octave, 5);
 
-        // C_4 - 1 semitone -> B_3
+        // Cn_4 - 1 semitone -> Bn_3
         let (note, octave) = calculate_transposition("Cn", 4, -1).unwrap();
         assert_eq!(note, "Bn_3");
         assert_eq!(octave, 3);
