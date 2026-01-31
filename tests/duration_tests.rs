@@ -45,13 +45,13 @@ fn test_dotted_note_duration() {
         base_len, SAMPLE_RATE as usize,
         "Base note duration incorrect"
     );
+
     assert_eq!(
         dot1_len,
         (SAMPLE_RATE as f32 * 1.5) as usize,
         "Single dot duration incorrect"
     );
 
-    // This assertion is expected to fail with the current implementation
     assert_eq!(
         dot2_len,
         (SAMPLE_RATE as f32 * 1.75) as usize,
