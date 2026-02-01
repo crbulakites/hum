@@ -109,7 +109,7 @@ pub fn is_voice_line(line: &str) -> bool {
 /// Constructs a formatted note string.
 ///
 /// Format: `(NoteName_Octave Duration)Dots`
-/// Example: `(C_4 1/4)+`
+/// Example: `(Cn_4 1/4)+`
 pub fn construct_note_text(note_name: &str, octave: i32, duration: &str, dots: &str) -> String {
     format!("({}_{} {}){}", note_name, octave, duration, dots)
 }
@@ -122,28 +122,33 @@ pub fn construct_note_text(note_name: &str, octave: i32, duration: &str, dots: &
 /// Returns `None` if the cursor is not currently inside or on a note.
 pub fn get_note_range_at_cursor(state: &EditorState) -> Option<(usize, usize)> {
     let len = state.text.len_chars();
+
     if state.cursor_pos >= len {
         return None;
     }
 
+    // Scan backwards for the beginning char of the note
     let mut start = state.cursor_pos;
     let mut i = 0;
     let mut found_open = false;
 
-    // Scan backwards for '('
     while i < PARSE_LOOKBACK_LIMIT {
         let c = state.text.char(start);
         if c == NOTE_START_CHAR {
             found_open = true;
             break;
         }
+
+        // Stop if we hit the end char of a note that is not the one we are on
         if c == NOTE_END_CHAR && start != state.cursor_pos {
-            // Found a closing paren that is not the one we might be standing on
             break;
         }
+
+        // Stop if we reach the beginning of the text
         if start == 0 {
             break;
         }
+
         start -= 1;
         i += 1;
     }
@@ -152,17 +157,20 @@ pub fn get_note_range_at_cursor(state: &EditorState) -> Option<(usize, usize)> {
         return None;
     }
 
-    // Scan forwards for ')'
+    // Scan forwards for the end char of the note
     let mut end = start;
     let mut found_close = false;
     i = 0;
+
     while end < len && i < PARSE_LOOKBACK_LIMIT {
         let c = state.text.char(end);
+
         if c == NOTE_END_CHAR {
             found_close = true;
-            end += 1; // Include ')'
+            end += 1; // Advance cursor past note closing char
             break;
         }
+
         end += 1;
         i += 1;
     }
@@ -171,6 +179,7 @@ pub fn get_note_range_at_cursor(state: &EditorState) -> Option<(usize, usize)> {
         // Check for trailing dots
         while end < len {
             let c = state.text.char(end);
+
             if c == NOTE_DOT_CHAR {
                 end += 1;
             } else {
