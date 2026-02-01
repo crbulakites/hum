@@ -32,6 +32,7 @@ const LINUX_DEFAULT_PLAYER: &str = "aplay";
 const DEFAULT_OCTAVE: u8 = 4;
 const DEFAULT_DURATION: &str = "1/4";
 const TAB_STRING: &str = "    ";
+const MAX_UNDO_HISTORY: usize = 1000;
 
 /// The current editing mode.
 pub enum Mode {
@@ -266,6 +267,9 @@ impl EditorState {
     /// Saves the current state to the undo stack.
     pub fn save_snapshot(&mut self) {
         self.undo_stack.push((self.text.clone(), self.cursor_pos));
+        if self.undo_stack.len() > MAX_UNDO_HISTORY {
+            self.undo_stack.remove(0);
+        }
         self.redo_stack.clear();
     }
 
